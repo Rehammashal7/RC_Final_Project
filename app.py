@@ -19,6 +19,94 @@ def load_pets():
     return pets
 
 
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def NewUser(email, password):
+    hashed = hash_password(password)
+    user_data = {"email": email, "password": hashed}
+
+    # Get the absolute path to users.json
+    file_path = Path("users.json")
+    
+    # If file doesn't exist, create an empty one
+    if not file_path.exists():
+        with open(file_path, "w") as f:
+            json.dump([], f)
+
+    # Load existing users
+    with open(file_path, "r") as f:
+        try:
+            users = json.load(f)
+        except json.JSONDecodeError:
+            users = []
+
+    # Check for duplicate usernames
+    for user in users:
+        if user["email"] == email:
+            return {"success": False, "message": "email already exists"}
+
+    # Add new user
+    users.append(user_data)
+    with open(file_path, "w") as f:
+        json.dump(users, f, indent=2)
+
+    return {"success": True, "message": "User registered successfully"}
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if flask.request.method == "POST":
+        print("Form submitted!")  # Basic check
+        print("Form data:", flask.request.form)  # Show all form data
+        data = flask.request.form
+        data = flask.request.form
+        email = data.get("email")  # Changed from "name" to "username"
+        password = data.get("password")
+      #  confirm_password = data.get("confirm_password")
+
+        # Debug print statement - add this line
+        print(f"Received signup request: {email}, {password}")
+
+        # Validate inputs
+        if not email or not password:
+            return "Please enter both username and password", 400
+            
+        
+        result = NewUser(email, password)
+        if result["success"]:
+            return redirect('/')
+        else:
+            return result["message"], 400
+    else:
+        return get_html("signup")
+
+
+
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if flask.request.method == "GET":
+        return get_html("login")  # Show the login form
+
+    email = flask.request.form.get('email')
+    password = flask.request.form.get('password')
+    print(f"Received signup request: {email}, {password}")
+    with open('users.json', 'r') as f:
+        users = json.load(f)
+
+    # Find user by email (case-insensitive)
+    user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
+
+    if not user:
+        return get_html("login")
+
+    if hash_password(password) == user['password']:
+        print(f"Login success for: {email}")
+        #   # or use redirect(url_for("homepage"))
+        return redirect('/')
+    else:
+        print(f"Login success for: {email}")
+        return get_html("login")
 
 
 @app.route("/")

@@ -8,27 +8,42 @@
 </head>
 <body>
   <!-- Navbar -->
-  <div class="navbar">
-    <div class="navbar-links">
-      <a href="/signup">Sign Up</a>
-      <a href="/login">Login</a>
-    </div>
-  </div>
+  <!-- Navbar -->
+<div class="navbar">
+  <!-- Search Bar inside Navbar -->
+  <form class="navbar-search-form">
+    <input type="text" class="navbar-search-bar" placeholder="Search for a pet...">
+    <button type="submit" class="navbar-search-button">Search</button>
+  </form>
 
+  <!-- Navbar Links -->
+  <div class="navbar-links">
+    <a href="/signup">Sign Up</a>
+    <a href="/login">Login</a>
+  </div>
+</div>
+
+<section class="split-container">
   <!-- Search Section with Split Background -->
   <div class="split-background-section">
-    <div class="half left-bg"></div>
-    <div class="half right-bg"></div>
-    <div class="search-overlay">
-      <form class="search-form">
-        <input type="text" class="search-bar" placeholder="Search for a pet...">
-        <button type="submit" class="search-button">Search</button>
-      </form>
-    </div>
-  </div>
+    <div class="full-bg"></div>
+    
+    <div class="animal-cards">
+  <a href="/cats" class="animal-card cat-card">
+    <h3>Cats</h3>
+    <p>See our adorable cats!</p>
+  </a>
+  <a href="/dogs" class="animal-card dog-card">
+    <h3>Dogs</h3>
+    <p>Find your loyal companion!</p>
+  </a>
+</div>
 
+  </div>
+  </section>
+<br>
   <!-- Pets Section -->
-  <h1 class="section-title">Available Pets</h1>
+  <h1 class="section-title after-cards">Available Pets</h1>
   <div class="cards-containers">
     <!-- PETS_PLACEHOLDER -->
   </div>
