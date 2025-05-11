@@ -1,0 +1,103 @@
+[
+    {
+        "id": 1,
+        "name": "Buddy",
+        "species": "Dog",
+        "age": 3,
+        "image_url":"/static/images/dogs/dog2.webp",
+        "adopted": false
+    },
+    {
+        "id": 2,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    },
+    {
+        "id": 3,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    },
+    {
+        "id": 4,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    },
+    {
+        "id": 5,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+    ,
+    {
+        "id": 6,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    },
+    {
+        "id": 7,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    },
+    {
+        "id": 8,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+    ,
+    {
+        "id": 9,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+    ,
+    {
+        "id": 10,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+    ,
+    {
+        "id": 11,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+    ,
+    {
+        "id": 12,
+        "name": "Mittens",
+        "species": "Cat",
+        "age": 2,
+        "image_url":"/static/images/dogs/dog3.webp",
+        "adopted": false
+    }
+]
