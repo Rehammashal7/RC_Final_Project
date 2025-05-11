@@ -2,7 +2,7 @@
 import flask,json,hashlib
 app = flask.Flask("")
 from pathlib import Path
-from flask import  redirect
+from flask import  redirect, request
 
 def get_html(page_name):
     html_file = open(page_name + ".html")
@@ -114,19 +114,36 @@ def homepage():
     pets = load_pets()
     html = get_html("index")
 
-    # Build the HTML block for pets
     pets_html = ""
     for pet in pets:
         pets_html += f"""
-        <div class="pet">
-            <h2>{pet['name']}</h2>
-            <img src="{pet['image_url']}" alt="{pet['name']}" width="150">
+        <div class="card">
+            <img src="{pet['image_url']}" alt="{pet['name']}">
+            <div class="card-content">
+                <h3>{pet['name']}</h3>
+                <p>{pet.get('description', 'No description available.')}</p>
+            </div>
+            <div class="status-badge">Available</div>
+            <a href="/pet?id={pet['id']}" class="action-btn"> → </a>
         </div>
         """
 
-    # Replace a placeholder in the HTML file
-    html = html.replace("<!-- PETS_PLACEHOLDER -->", pets_html)
+    html = html.replace("<!-- PETS_PLACEHOLDER -->", f'<div class="cards-containers">{pets_html}</div>')
     return html
 
+@app.route("/pet")
+def petDetails():
+    pet_id = flask.request.args.get("id")
+    if not pet_id:
+        return "Pet ID not provided", 400
 
+    pets = load_pets()
+    pet = next((p for p in pets if str(p["id"]) == pet_id), None)
 
+    if not pet:
+        return "Pet not found", 404
+
+    html = get_html("pet")
+    html = html.replace("<!-- PET_NAME -->", pet["name"])
+    html = html.replace("<!-- PET_IMAGE -->", pet["image_url"])
+    return html
