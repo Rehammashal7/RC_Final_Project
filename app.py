@@ -25,9 +25,6 @@ def get_next_user_id(users):
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
-from pathlib import Path
-import json
-from werkzeug.security import generate_password_hash as hash_password
 
 def NewUser(email, password):
     hashed = hash_password(password)
