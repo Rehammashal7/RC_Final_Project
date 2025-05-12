@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><!-- PET_NAME --></title>
+  <link rel="stylesheet" href="/static/PetStyle.css">
 </head>
 <body>
-<!-- PET_NAME -->
+  <div class="pet-detail-container">
+    <img src="<!-- PET_IMAGE -->" alt="Image of <!-- PET_NAME -->" class="pet-detail-img">
+    <div class="pet-detail-info">
+      <h1><!-- PET_NAME --></h1>
+      <p><strong>Species:</strong> <!-- PET_SPECIES --></p>
+      <p><strong>Age:</strong> <!-- PET_AGE --> years old</p>
+      <p><strong>Status:</strong> <!-- PET_STATUS --></p>
+      <p class="pet-about"><!-- PET_ABOUT --></p>
+      <button class="adopt-button">Adopt Me</button>
+    </div>
+  </div>
 </body>
 </html>

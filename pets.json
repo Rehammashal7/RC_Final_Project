@@ -5,7 +5,8 @@
         "species": "Dog",
         "age": 3,
         "image_url":"/static/images/dogs/dog2.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 2,
@@ -13,7 +14,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 3,
@@ -21,7 +23,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home,Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 4,
@@ -29,7 +32,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 5,
@@ -37,7 +41,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
     ,
     {
@@ -46,7 +51,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 7,
@@ -54,7 +60,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     },
     {
         "id": 8,
@@ -62,7 +69,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
     ,
     {
@@ -71,7 +79,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
     ,
     {
@@ -80,7 +89,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
     ,
     {
@@ -89,7 +99,8 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
     ,
     {
@@ -98,6 +109,7 @@
         "species": "Cat",
         "age": 2,
         "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false
+        "adopted": false,
+        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
     }
 ]

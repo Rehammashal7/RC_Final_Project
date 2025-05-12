@@ -146,4 +146,10 @@ def petDetails():
     html = get_html("pet")
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     html = html.replace("<!-- PET_IMAGE -->", pet["image_url"])
+    html = html.replace("<!-- PET_SPECIES -->", pet["species"])
+    html = html.replace("<!-- PET_AGE -->", str(pet["age"]))
+    html = html.replace("<!-- PET_STATUS -->", "Adopted" if pet["adopted"] else "Available")
+    html = html.replace("<!-- PET_ABOUT -->", pet.get("about", "No information available."))
     return html
+
+
