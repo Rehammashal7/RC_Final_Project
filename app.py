@@ -150,6 +150,21 @@ def petDetails():
     html = html.replace("<!-- PET_AGE -->", str(pet["age"]))
     html = html.replace("<!-- PET_STATUS -->", "Adopted" if pet["adopted"] else "Available")
     html = html.replace("<!-- PET_ABOUT -->", pet.get("about", "No information available."))
+    html = html.replace("<!-- PET_ID -->", str(pet["id"]))
     return html
 
 
+@app.route("/adopt")
+def adopt_form():
+    pet_id = flask.request.args.get("id")
+    pets = load_pets()
+    pet = next((p for p in pets if str(p["id"]) == pet_id), None)
+
+    if not pet:
+        return "Pet not found", 404
+
+    html = get_html("adopt")
+    html = html.replace("<!-- PET_NAME -->", pet["name"])
+    return html
+
+ 

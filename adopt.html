@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Adopt <!-- PET_NAME --></title>
+  <link rel="stylesheet" href="/static/PetStyle.css" />
+</head>
+<body>
+  <div class="adopt-form-container">
+    <h2>Adopt <!-- PET_NAME --></h2>
+    <form action="/submit-adoption" method="POST">
+      <input type="text" name="full_name" placeholder="Your Full Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="reason" placeholder="Why do you want to adopt?"></textarea>
+      <input type="hidden" name="pet_name" value="<!-- PET_NAME -->" />
+      <button type="submit">Submit Adoption Request</button>
+    </form>
+  </div>
+</body>
+</html>
