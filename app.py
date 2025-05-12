@@ -181,4 +181,48 @@ def adopt_form():
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     return html
 
- 
+@app.route("/shelter-signup", methods=["GET", "POST"])
+def shelter_signup():
+    if flask.request.method == "POST":
+        data = flask.request.form
+        email = data.get("email")
+        password = data.get("password")
+
+        if not email or not password:
+            return "Please enter both email and password", 400
+
+        
+
+        file_path = Path("shelters.json")
+        if not file_path.exists():
+            file_path.write_text("[]")
+
+        with open(file_path, "r") as f:
+            try:
+                shelters = json.load(f)
+            except json.JSONDecodeError:
+                shelters = []
+
+        # Check if email already exists
+        for s in shelters:
+            if s["email"] == email:
+                return "Shelter already registered", 400
+
+        # Assign unique ID
+        next_id = max((s.get("id", 0) for s in shelters), default=0) + 1
+
+        new_shelter = {
+            "id": next_id,
+            "email": email,
+            "password": password
+        }
+
+        shelters.append(new_shelter)
+        with open(file_path, "w") as f:
+            json.dump(shelters, f, indent=2)
+
+        # Store shelter session
+        flask.session["shelter_id"] = next_id
+        return redirect("shelter-dashboard")
+
+    return get_html("shelter-signup")
