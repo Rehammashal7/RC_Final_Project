@@ -18,15 +18,20 @@ def load_pets():
     pets=json.loads(pets)
     return pets
 
+def get_next_user_id(users):
+    if not users:
+        return 1
+    return max(user["id"] for user in users) + 1
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
+from pathlib import Path
+import json
+from werkzeug.security import generate_password_hash as hash_password
 
 def NewUser(email, password):
     hashed = hash_password(password)
-    user_data = {"email": email, "password": hashed}
-
-    # Get the absolute path to users.json
+    
     file_path = Path("users.json")
     
     # If file doesn't exist, create an empty one
@@ -41,17 +46,29 @@ def NewUser(email, password):
         except json.JSONDecodeError:
             users = []
 
-    # Check for duplicate usernames
+    # Check for duplicate emails
     for user in users:
         if user["email"] == email:
-            return {"success": False, "message": "email already exists"}
+            return {"success": False, "message": "Email already exists"}
 
-    # Add new user
+    # Generate next user ID
+    next_id = max((user.get("id", 0) for user in users), default=0) + 1
+
+    # Add new user with ID
+    user_data = {
+        "id": next_id,
+        "email": email,
+        "password": hashed
+    }
+
     users.append(user_data)
+
+    # Save updated user list
     with open(file_path, "w") as f:
         json.dump(users, f, indent=2)
 
     return {"success": True, "message": "User registered successfully"}
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
