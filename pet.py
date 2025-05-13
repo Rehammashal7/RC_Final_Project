@@ -1,15 +1,22 @@
+class Pet:
+    def __init__(self, id, name, species, age, image_url, adopted, shelter_id, about):
+        self.id = id
+        self.name = name
+        self.species = species
+        self.age = age
+        self.image_url = image_url
+        self.adopted = adopted
+        self.shelter_id = shelter_id
+        self.about = about
 
-class pet:
-    def __init__(self,id,name,age,species,image,adopted=False):
-        self.id=id
-        self.name=name
-        self.age=age
-        self.species=species
-        self.image=image
-        self.adopted=adopted
-
-
-    def adopt(self):
-        self.adopted=True
-
-        
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "species": self.species,
+            "age": self.age,
+            "image_url": self.image_url,
+            "adopted": self.adopted,
+            "shelter_id": self.shelter_id,
+            "about": self.about
+        }

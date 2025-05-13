@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Pet</title>
+    <link rel="stylesheet" href="/static/add_pet.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add a New Pet</h2>
+        <form action="/add-pet" method="POST" enctype="multipart/form-data">
+            <label for="name">Pet Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="species">Species:</label>
+            <input type="text" id="species" name="species" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+           <label for="image">Pet Image:</label>
+<input type="file" id="image" name="image" accept="image/*" required>
+
+            <label for="about">About:</label>
+            <textarea id="about" name="about" rows="4" placeholder="Write something about the pet..." required></textarea>
+
+            <label for="adopted">Adopted:</label>
+            <select id="adopted" name="adopted">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+            </select>
+
+            <button type="submit">Add Pet</button>
+        </form>
+    </div>
+</body>
+</html>

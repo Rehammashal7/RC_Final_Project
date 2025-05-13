@@ -3,6 +3,13 @@ import flask,json,hashlib
 app = flask.Flask("")
 from pathlib import Path
 from flask import  redirect, request
+from pet import Pet
+import os
+import uuid
+import flask
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 def get_html(page_name):
     html_file = open(page_name + ".html")
@@ -65,6 +72,11 @@ def NewUser(email, password):
         json.dump(users, f, indent=2)
 
     return {"success": True, "message": "User registered successfully"}
+
+
+def save_pets(pets):
+    with open("pets.json", "w") as f:
+        json.dump(pets, f, indent=2)
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -226,3 +238,123 @@ def shelter_signup():
         return redirect("shelter-dashboard")
 
     return get_html("shelter-signup")
+
+@app.route("/dashboard")
+def dashboard():
+    shelter_id = 1  # later: get from session
+    pets = load_pets()
+    my_pets = [pet for pet in pets if pet.get("shelter_id") == shelter_id]
+
+    html = get_html("dashboard")
+    pets_html = ""
+
+    for pet in my_pets:
+        pets_html += f"""
+        <div class="dashboard-card" id="pet-{pet['id']}">
+            <h3>{pet['name']}</h3>
+            <img src="{pet['image_url']}" alt="Pet image">
+            <p>Species: {pet['species']}</p>
+            <p>Age: {pet['age']}</p>
+            <p>About: {pet.get('about', '')}</p>
+            <p>Status: {'Adopted' if pet['adopted'] else 'Available'}</p>
+
+            <div class="dashboard-actions">
+                <button class="btn edit-btn" onclick="toggleForm({pet['id']})">✏️ Edit</button>
+                <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
+            </div>
+
+            <form class="edit-form" id="form-{pet['id']}" method="POST" action="/edit-pet">
+                <input type="hidden" name="id" value="{pet['id']}">
+                <input type="text" name="name" value="{pet['name']}" required><br>
+                <input type="text" name="species" value="{pet['species']}" required><br>
+                <input type="number" name="age" value="{pet['age']}" required><br>
+                <textarea name="about">{pet.get('about', '')}</textarea><br>
+                <select name="adopted">
+                    <option value="false" {'selected' if not pet['adopted'] else ''}>Available</option>
+                    <option value="true" {'selected' if pet['adopted'] else ''}>Adopted</option>
+                </select><br>
+                <button type="submit" class="btn save-btn">💾 Save</button>
+                <button type="button" onclick="toggleForm({pet['id']})" class="btn cancel-btn">Cancel</button>
+            </form>
+        </div>
+        """
+
+    html = html.replace("<!-- PETS_PLACEHOLDER -->", pets_html)
+    return html
+
+
+
+
+@app.route("/add-pet", methods=["GET", "POST"])
+def add_pet():
+    if flask.request.method == "POST":
+        data = flask.request.form
+
+        #  Handle uploaded image
+        file = flask.request.files.get("image")
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join("static", "images", filename)
+            file.save(file_path)
+            image_url = "/" + file_path.replace("\\", "/")  # make it web-friendly
+        else:
+            image_url = "/static/images/default.jpg"  # fallback image
+
+        #  Safe age conversion
+        age_raw = data.get("age")
+        if not age_raw or not age_raw.isdigit():
+            return "Invalid age provided", 400
+        age = int(age_raw)
+
+        #  Get shelter ID from session
+        shelter_id = 1
+        if not shelter_id:
+            return "You must be logged in as a shelter to add a pet", 403
+
+        pets = load_pets()
+        next_id = max((pet.get("id") or 0 for pet in pets), default=0) + 1
+        #  Create pet object
+        pet = Pet(
+            id=next_id,
+            name=data.get("name"),
+            species=data.get("species"),
+            age=age,
+            image_url=image_url,
+            adopted=False,
+            shelter_id=shelter_id,
+            about=data.get("about", "")
+        )
+
+        #  Save
+       
+        pets.append(pet.to_dict())
+        save_pets(pets)
+
+        return redirect("/dashboard")
+
+    return get_html("add_pet")
+
+
+@app.route("/edit-pet", methods=["POST"])
+def edit_pet():
+    data = flask.request.form
+    pet_id = int(data.get("id"))
+
+    pets = load_pets()
+    for pet in pets:
+        if pet["id"] == pet_id:
+            pet["name"] = data.get("name")
+            pet["species"] = data.get("species")
+            pet["age"] = int(data.get("age"))
+            pet["about"] = data.get("about", "")
+            pet["adopted"] = data.get("adopted") == "true"
+            break
+
+    save_pets(pets)
+    return redirect("/dashboard")
+
+ 
+
+
+
+
