@@ -79,6 +79,9 @@ def save_pets(pets):
         json.dump(pets, f, indent=2)
 
 
+
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if flask.request.method == "POST":
@@ -238,7 +241,6 @@ def shelter_signup():
         return redirect("shelter-dashboard")
 
     return get_html("shelter-signup")
-
 @app.route("/dashboard")
 def dashboard():
     shelter_id = 1  # later: get from session
@@ -259,23 +261,9 @@ def dashboard():
             <p>Status: {'Adopted' if pet['adopted'] else 'Available'}</p>
 
             <div class="dashboard-actions">
-                <button class="btn edit-btn" onclick="toggleForm({pet['id']})">✏️ Edit</button>
+                <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
                 <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
             </div>
-
-            <form class="edit-form" id="form-{pet['id']}" method="POST" action="/edit-pet">
-                <input type="hidden" name="id" value="{pet['id']}">
-                <input type="text" name="name" value="{pet['name']}" required><br>
-                <input type="text" name="species" value="{pet['species']}" required><br>
-                <input type="number" name="age" value="{pet['age']}" required><br>
-                <textarea name="about">{pet.get('about', '')}</textarea><br>
-                <select name="adopted">
-                    <option value="false" {'selected' if not pet['adopted'] else ''}>Available</option>
-                    <option value="true" {'selected' if pet['adopted'] else ''}>Adopted</option>
-                </select><br>
-                <button type="submit" class="btn save-btn">💾 Save</button>
-                <button type="button" onclick="toggleForm({pet['id']})" class="btn cancel-btn">Cancel</button>
-            </form>
         </div>
         """
 
@@ -312,8 +300,7 @@ def add_pet():
             return "You must be logged in as a shelter to add a pet", 403
 
         pets = load_pets()
-        next_id = max((pet.get("id") or 0 for pet in pets), default=0) + 1
-        #  Create pet object
+        next_id = max((pet.get("id") or 0 for pet in pets), default=0) + 1        #  Create pet object
         pet = Pet(
             id=next_id,
             name=data.get("name"),
@@ -334,27 +321,71 @@ def add_pet():
 
     return get_html("add_pet")
 
-
-@app.route("/edit-pet", methods=["POST"])
+@app.route("/edit_pet", methods=["GET", "POST"])
 def edit_pet():
-    data = flask.request.form
-    pet_id = int(data.get("id"))
+    pets = load_pets()
+
+    if flask.request.method == "GET":
+        pet_id = int(flask.request.args.get("id"))
+        pet = next((p for p in pets if p["id"] == pet_id), None)
+        if not pet:
+            return "Pet not found", 404
+
+        html = get_html("edit_pet")  # Reads the raw HTML template
+
+        adopted_options = """
+            <option value="false" {avail}>Available</option>
+            <option value="true" {adopted}>Adopted</option>
+        """.format(
+            avail="selected" if not pet["adopted"] else "",
+            adopted="selected" if pet["adopted"] else ""
+        )
+
+        html = html.replace("__ID__", str(pet["id"]))
+        html = html.replace("__NAME__", pet["name"])
+        html = html.replace("__SPECIES__", pet["species"])
+        html = html.replace("__AGE__", str(pet["age"]))
+        html = html.replace("__ABOUT__", pet.get("about", ""))
+        html = html.replace("__ADOPTED_OPTIONS__", adopted_options)
+
+        return html
+
+    elif flask.request.method == "POST":
+        form = flask.request.form
+        pet_id = int(form["id"])
+
+        for pet in pets:
+            if pet["id"] == pet_id:
+                pet["name"] = form["name"]
+                pet["species"] = form["species"]
+                pet["age"] = int(form["age"])
+                pet["about"] = form.get("about", "")
+                pet["adopted"] = form.get("adopted") == "true"
+
+                file = flask.request.files.get("image")
+                if file and file.filename:
+                    filename = secure_filename(file.filename)
+                    path = os.path.join("static", "images", filename)
+                    file.save(path)
+                    pet["image_url"] = "/" + path.replace("\\", "/")
+
+                save_pets(pets)
+                break
+
+        return redirect("/dashboard")
+
+@app.route("/delete_pet")
+def delete_pet():
+    pet_id = flask.request.args.get("id")
+
+    if not pet_id:
+        return "Pet ID is required", 400
 
     pets = load_pets()
-    for pet in pets:
-        if pet["id"] == pet_id:
-            pet["name"] = data.get("name")
-            pet["species"] = data.get("species")
-            pet["age"] = int(data.get("age"))
-            pet["about"] = data.get("about", "")
-            pet["adopted"] = data.get("adopted") == "true"
-            break
+    updated_pets = [pet for pet in pets if str(pet["id"]) != pet_id]
 
-    save_pets(pets)
+    save_pets(updated_pets)
+
     return redirect("/dashboard")
-
- 
-
-
 
 

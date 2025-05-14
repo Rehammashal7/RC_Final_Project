@@ -1,127 +1,112 @@
 [
-    {
-        "id": 1,
-        "name": "Buddy",
-        "species": "Dog",
-        "age": 3,
-        "image_url":"/static/images/dogs/dog2.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 2,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 3,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home,Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your homeMeet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 4,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 5,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
-    ,
-    {
-        "id": 6,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 7,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    },
-    {
-        "id": 8,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
-    ,
-    {
-        "id": 9,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
-    ,
-    {
-        "id": 10,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
-    ,
-    {
-        "id": 11,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
-    ,
-    {
-        "id": 12,
-        "name": "Mittens",
-        "species": "Cat",
-        "age": 2,
-        "image_url":"/static/images/dogs/dog3.webp",
-        "adopted": false,
-        "shelter_id": 1,
-        "about":"Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
-    }
+  {
+    "id": 2,
+    "name": "rrooroo",
+    "species": "cat",
+    "age": 4,
+    "image_url": "/static/images/test.PNG",
+    "adopted": true,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 6,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 7,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 8,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 3,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 9,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 10,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 11,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": 12,
+    "name": "Mittens",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
+  },
+  {
+    "id": null,
+    "name": "Rere",
+    "species": "dsiofj",
+    "age": 3,
+    "image_url": "/static/images/test.PNG",
+    "adopted": false,
+    "about": "rrrrrrrrrrrrrrrrrrrrrrrr",
+    "shelter_id": 1
+  },
+  {
+    "id": 13,
+    "name": "eeeeeee",
+    "species": "444",
+    "age": 4,
+    "image_url": "/static/images/test.PNG",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "444"
+  },
+  {
+    "id": 14,
+    "name": "rrrr",
+    "species": "444",
+    "age": 4,
+    "image_url": "/static/images/test.PNG",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "444"
+  }
 ]

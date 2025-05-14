@@ -127,4 +127,20 @@
   .adopt-form-container form button:hover {
     background-color: #9d33a1;
   }
-  
+  .edit-form {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+.edit-form button {
+    margin-right: 5px;
+}
