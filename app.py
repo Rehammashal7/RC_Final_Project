@@ -2,13 +2,13 @@
 import flask,json,hashlib
 app = flask.Flask("")
 from pathlib import Path
-from flask import  redirect, request
+from flask import  redirect, request,session
 from pet import Pet
 import os
 import uuid
 import flask
 from werkzeug.utils import secure_filename
-
+app.secret_key = os.urandom(24)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 def get_html(page_name):
@@ -132,10 +132,14 @@ def login():
     if hash_password(password) == user['password']:
         print(f"Login success for: {email}")
         #   # or use redirect(url_for("homepage"))
+        session["user_id"] = user["id"]
+        session["username"] = user["name"]
         return redirect('/')
     else:
         print(f"Login success for: {email}")
         return get_html("login")
+
+
 
 
 @app.route("/")
@@ -143,6 +147,7 @@ def homepage():
     pets = load_pets()
     html = get_html("index")
 
+    # Pet cards
     pets_html = ""
     for pet in pets:
         pets_html += f"""
@@ -156,9 +161,23 @@ def homepage():
             <a href="/pet?id={pet['id']}" class="action-btn"> → </a>
         </div>
         """
-
     html = html.replace("<!-- PETS_PLACEHOLDER -->", f'<div class="cards-containers">{pets_html}</div>')
+
+    # Navbar links
+    if "user_id" in session:
+        navbar_links = '<a href="/logout">Logout</a>'
+    else:
+        navbar_links = '<a href="/signup">Sign Up</a><a href="/login">Login</a>'
+    html = html.replace("<!-- NAVBAR_LINKS -->", navbar_links)
+
     return html
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    return redirect("/")
+
 
 @app.route("/pet")
 def petDetails():

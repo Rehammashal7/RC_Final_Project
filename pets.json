@@ -80,16 +80,6 @@
     "about": "Meet your new best friend! Learn more about this adorable pet and see if they're the perfect match for your home"
   },
   {
-    "id": null,
-    "name": "Rere",
-    "species": "dsiofj",
-    "age": 3,
-    "image_url": "/static/images/test.PNG",
-    "adopted": false,
-    "about": "rrrrrrrrrrrrrrrrrrrrrrrr",
-    "shelter_id": 1
-  },
-  {
     "id": 13,
     "name": "eeeeeee",
     "species": "444",

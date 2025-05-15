@@ -3,5 +3,10 @@
     "id": 1,
     "email": "rehammashaal8@gmail.com",
     "password": "scrypt:32768:8:1$PuYg14gFGeMdxB07$16b5197ebea429de9177f8f90ec2e9266248cb1d4c9aec1b68271ce0d70bc15dbd1abf7184552d0202c7458b553abf3530f96ce438c29b2b2c70ffe4e0b12fed"
+  },
+  {
+    "id": 2,
+    "email": "rehammashaal88@gmail.com",
+    "password": "c18fca5ab2d46562db98be67d26987fa3b18ca4199fe6d3cd48fac6837041977"
   }
 ]
