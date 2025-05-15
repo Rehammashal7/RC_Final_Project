@@ -1,6 +1,7 @@
 
 import flask,json,hashlib
-app = flask.Flask("")
+
+from Requests import AdoptionRequest, save_request_to_json
 from pathlib import Path
 from flask import  redirect, request,session
 from pet import Pet
@@ -8,6 +9,7 @@ import os
 import uuid
 import flask
 from werkzeug.utils import secure_filename
+app = flask.Flask("")
 app.secret_key = os.urandom(24)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
@@ -132,8 +134,7 @@ def login():
     if hash_password(password) == user['password']:
         print(f"Login success for: {email}")
         #   # or use redirect(url_for("homepage"))
-        session["user_id"] = user["id"]
-        session["username"] = user["name"]
+        session["user_id"] = user["id"] 
         return redirect('/')
     else:
         print(f"Login success for: {email}")
@@ -406,5 +407,33 @@ def delete_pet():
     save_pets(updated_pets)
 
     return redirect("/dashboard")
+@app.route("/get-session-user")
+def get_session_user():
+    if "user_id" in session:
+        return {"user_id": session["user_id"]}
+    return {"user_id": None}
+@app.route("/submit-adoption", methods=["POST"])
+def submit_adoption():
+    full_name = request.form.get("full_name")
+    email = request.form.get("email")
+    message = request.form.get("reason")
+    pet_id = request.args.get("pet_id") or request.form.get("pet_id")
+    shelter_id = request.args.get("shelter_id") or request.form.get("shelter_id")
+
+    # Example: user_id comes from localStorage (passed in form hidden input)
+    user_id = request.form.get("user_id")
+
+    # Create and save the request
+    adoption_request = AdoptionRequest(
+        user_id=user_id,
+        pet_id=pet_id,
+        shelter_id=shelter_id,
+        email=email,
+        message=message
+    )
+
+    save_request_to_json(adoption_request)
+
+    return "Adoption request submitted!"
 
 
