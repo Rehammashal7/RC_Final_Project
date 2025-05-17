@@ -4,17 +4,14 @@
   <meta charset="UTF-8">
   <title>Pet Adoption</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/CSS/style.css">
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
-    <!-- Search Bar inside Navbar -->
-    <form class="navbar-search-form">
-      <input type="text" class="navbar-search-bar" placeholder="Search for a pet...">
-      <button type="submit" class="navbar-search-button">Search</button>
-    </form>
-
+      <div class="navbar-logo">
+    <a href="/"><img src="static/images/OIP.jpeg" alt="Pet Logo" /></a>
+  </div>
     <!-- Navbar Links -->
     <div class="navbar-links">
       <!-- NAVBAR_LINKS -->
@@ -25,16 +22,16 @@
     <div class="split-background-section">
       <div class="full-bg"></div>
       
-      <div class="animal-cards">
-        <a href="/cats" class="animal-card cat-card">
-          <h3>Cats</h3>
-          <p>See our adorable cats!</p>
-        </a>
-        <a href="/dogs" class="animal-card dog-card">
-          <h3>Dogs</h3>
-          <p>Find your loyal companion!</p>
-        </a>
-      </div>
+    <div class="animal-cards">
+  <div class="animal-card cat-card" onclick="filterPets('Cat')">
+    <h3>Cats</h3>
+    <p>See our adorable cats!</p>
+  </div>
+  <div class="animal-card dog-card" onclick="filterPets('Dog')">
+    <h3>Dogs</h3>
+    <p>Find your loyal companion!</p>
+  </div>
+</div>
     </div>
   </section>
   <br>
@@ -42,5 +39,7 @@
   <!-- Pets Section -->
   <h1 class="section-title after-cards">Available Pets</h1>
   <!-- PETS_PLACEHOLDER -->
+   
+   <script src="/static/js/user.js"></script>
 </body>
 </html>

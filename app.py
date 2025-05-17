@@ -151,17 +151,16 @@ def homepage():
     # Pet cards
     pets_html = ""
     for pet in pets:
-        pets_html += f"""
-        <div class="card">
+        pets_html += f'''<div class="card" data-species="{pet['species']}">
             <img src="{pet['image_url']}" alt="{pet['name']}">
             <div class="card-content">
                 <h3>{pet['name']}</h3>
-                <p>{pet.get('description', 'No description available.')}</p>
+                <p>{pet.get('about', 'No description available.')}</p>
             </div>
             <div class="status-badge">Available</div>
             <a href="/pet?id={pet['id']}" class="action-btn"> → </a>
-        </div>
-        """
+        </div>'''
+
     html = html.replace("<!-- PETS_PLACEHOLDER -->", f'<div class="cards-containers">{pets_html}</div>')
 
     # Navbar links
