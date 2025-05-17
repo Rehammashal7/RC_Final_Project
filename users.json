@@ -2,16 +2,28 @@
   {
     "id": 1,
     "email": "rehammashaal8@gmail.com",
-    "password": "scrypt:32768:8:1$PuYg14gFGeMdxB07$16b5197ebea429de9177f8f90ec2e9266248cb1d4c9aec1b68271ce0d70bc15dbd1abf7184552d0202c7458b553abf3530f96ce438c29b2b2c70ffe4e0b12fed"
+    "password": "f1007949b2b35a152e35d673a1c564cc4bef84556b6048f7b14c5dd88c380159"
   },
   {
     "id": 2,
     "email": "rehammashaal88@gmail.com",
-    "password": "c18fca5ab2d46562db98be67d26987fa3b18ca4199fe6d3cd48fac6837041977"
+    "password": "9f1d72dd775e99f731d0b02c2344d8c0bfc58d361450ab0e78cfd09c2343f1aa"
   },
   {
     "id": 3,
     "email": "rehammaeeshaal8@gmail.com",
-    "password": "50c4663aa99c9b23f3ea1488da6d2a1d18dfffec89357b30df0290496921d897"
+    "password": "f1007949b2b35a152e35d673a1c564cc4bef84556b6048f7b14c5dd88c380159"
+  },
+  {
+    "id": 4,
+    "username": "ddd",
+    "email": "rehammaeddddeshrraal8@gmail.com",
+    "password": "9876543221XYZ123"
+  },
+  {
+    "id": 5,
+    "username": "rere",
+    "email": "rere@gmail.com",
+    "password": "LAHSAMMAHERXYZ123"
   }
 ]

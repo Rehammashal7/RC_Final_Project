@@ -1,14 +1,14 @@
 
 import flask,json,hashlib
-
+from models.user import User
 from Requests import AdoptionRequest, save_request_to_json
 from pathlib import Path
 from flask import  redirect, request,session
 from pet import Pet
 import os
-import uuid
-import flask
 from werkzeug.utils import secure_filename
+from models.shelter import Shelter
+from models.entity import Entity
 app = flask.Flask("")
 app.secret_key = os.urandom(24)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
@@ -34,119 +34,11 @@ def load_pets():
     pets=json.loads(pets)
     return pets
 
-def get_next_user_id(users):
-    if not users:
-        return 1
-    return max(user["id"] for user in users) + 1
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def NewUser(email, password):
-    hashed = hash_password(password)
-    
-    file_path = Path("users.json")
-    
-    # If file doesn't exist, create an empty one
-    if not file_path.exists():
-        with open(file_path, "w") as f:
-            json.dump([], f)
-
-    # Load existing users
-    with open(file_path, "r") as f:
-        try:
-            users = json.load(f)
-        except json.JSONDecodeError:
-            users = []
-
-    # Check for duplicate emails
-    for user in users:
-        if user["email"] == email:
-            return {"success": False, "message": "Email already exists"}
-
-    # Generate next user ID
-    next_id = max((user.get("id", 0) for user in users), default=0) + 1
-
-    # Add new user with ID
-    user_data = {
-        "id": next_id,
-        "email": email,
-        "password": hashed
-    }
-
-    users.append(user_data)
-
-    # Save updated user list
-    with open(file_path, "w") as f:
-        json.dump(users, f, indent=2)
-
-    return {"success": True, "message": "User registered successfully"}
 
 
 def save_pets(pets):
     with open("pets.json", "w") as f:
         json.dump(pets, f, indent=2)
-
-
-
-
-
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    if flask.request.method == "POST":
-        print("Form submitted!")  # Basic check
-        print("Form data:", flask.request.form)  # Show all form data
-        data = flask.request.form
-        data = flask.request.form
-        email = data.get("email")  # Changed from "name" to "username"
-        password = data.get("password")
-      #  confirm_password = data.get("confirm_password")
-
-        # Debug print statement - add this line
-        print(f"Received signup request: {email}, {password}")
-
-        # Validate inputs
-        if not email or not password:
-            return "Please enter both username and password", 400
-            
-        
-        result = NewUser(email, password)
-        if result["success"]:
-            return redirect('/')
-        else:
-            return result["message"], 400
-    else:
-        return get_html2("signup")
-
-
-
-
-@app.route('/login', methods=["GET", "POST"])
-def login():
-    if flask.request.method == "GET":
-        return get_html2("login")  # Show the login form
-
-    email = flask.request.form.get('email')
-    password = flask.request.form.get('password')
-    print(f"Received signup request: {email}, {password}")
-    with open('users.json', 'r') as f:
-        users = json.load(f)
-
-    # Find user by email (case-insensitive)
-    user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
-
-    if not user:
-        return get_html2("login")
-
-    if hash_password(password) == user['password']:
-        print(f"Login success for: {email}")
-        #   # or use redirect(url_for("homepage"))
-        session["user_id"] = user["id"] 
-        return redirect('/')
-    else:
-        print(f"Login success for: {email}")
-        return get_html2("login")
-
 
 
 
@@ -178,6 +70,94 @@ def homepage():
     html = html.replace("<!-- NAVBAR_LINKS -->", navbar_links)
 
     return html
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        data = request.form
+
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+        role = data.get("role")
+
+        if not email or not password or not username:
+            return "Please complete all fields.", 400
+
+        if len(password) < 8:
+            return "Password must be at least 8 characters.", 400
+
+        if role == "shelter":
+            shelter = Shelter(username, email, password)
+            shelter.save()
+        else:
+            user = User(username, email, password)
+            user.save()
+
+        return redirect("/")
+
+    return get_html2("signup")
+
+
+
+
+
+@app.route('/login', methods=["GET", "POST"])
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if flask.request.method == "GET":
+        return get_html2("login")  # Show the login form
+
+    email = flask.request.form.get('email')
+    password = flask.request.form.get('password')
+    print(f"Received login request: {email}, {password}")
+
+    # Load users
+    with open('users.json', 'r') as f:
+        try:
+            users = json.load(f)
+        except json.JSONDecodeError:
+            users = []
+
+    # Load shelters
+    with open('shelters.json', 'r') as f:
+        try:
+            shelters = json.load(f)
+        except json.JSONDecodeError:
+            shelters = []
+
+    # Check users
+    user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
+    if user:
+        temp = Entity()
+        temp.password = user['password']  # Assign stored (hashed) password
+        if temp.verify_password(password):
+            print(f"Login success for USER: {email}")
+            session["user_id"] = user["id"]
+            session["role"] = "user"
+            return redirect('/')  # redirect user to home
+
+    # Check shelters
+    shelter = next((s for s in shelters if s.get('email', '').lower() == email.lower()), None)
+    if shelter:
+        temp = Entity()
+        temp.password = shelter['password']
+        if temp.verify_password(password):
+            print(f"Login success for SHELTER: {email}")
+            session["user_id"] = shelter["id"]
+            session["role"] = "shelter"
+            return redirect('/dashboard')  # redirect shelter to dashboard
+
+    # If login failed
+    print(f"Login failed for: {email}")
+    return get_html2("login")
+
+
+
+
+
+
 
 
 @app.route("/logout")
