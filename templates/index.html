@@ -9,37 +9,44 @@
 <body>
   <!-- Navbar -->
   <div class="navbar">
-      <div class="navbar-logo">
-    <a href="/"><img src="static/images/OIP.jpeg" alt="Pet Logo" /></a>
-  </div>
+    <div class="navbar-logo">
+      <a href="/"><img src="/static/images/OIP.jpeg" alt="Pet Logo" /></a>
+    </div>
     <!-- Navbar Links -->
-    <div class="navbar-links">
-      <!-- NAVBAR_LINKS -->
+          <div class="welcome-message" id="welcomeMessage" ></div>
+
+    <div class="navbar-links" id="navbarLinks">
+      <!-- JS will populate this -->
     </div>
   </div>
 
+  <!-- Welcome Message -->
+ 
+
+  <!-- Category Cards -->
   <section class="split-container">
     <div class="split-background-section">
       <div class="full-bg"></div>
-      
-    <div class="animal-cards">
-  <div class="animal-card cat-card" onclick="filterPets('Cat')">
-    <h3>Cats</h3>
-    <p>See our adorable cats!</p>
-  </div>
-  <div class="animal-card dog-card" onclick="filterPets('Dog')">
-    <h3>Dogs</h3>
-    <p>Find your loyal companion!</p>
-  </div>
-</div>
+      <div class="animal-cards">
+        <div class="animal-card cat-card" onclick="filterPets('Cat')">
+          <h3>Cats</h3>
+          <p>See our adorable cats!</p>
+        </div>
+        <div class="animal-card dog-card" onclick="filterPets('Dog')">
+          <h3>Dogs</h3>
+          <p>Find your loyal companion!</p>
+        </div>
+      </div>
     </div>
   </section>
+
   <br>
 
   <!-- Pets Section -->
   <h1 class="section-title after-cards">Available Pets</h1>
   <!-- PETS_PLACEHOLDER -->
-   
-   <script src="/static/js/user.js"></script>
+
+  <!-- JS Scripts -->
+  <script src="/static/js/user.js"></script>
 </body>
 </html>

@@ -3,12 +3,13 @@ import flask,json,hashlib
 from models.user import User
 from Requests import AdoptionRequest, save_request_to_json
 from pathlib import Path
-from flask import  redirect, request,session
+from flask import  redirect, request,session,jsonify
 from pet import Pet
 import os
 from werkzeug.utils import secure_filename
 from models.shelter import Shelter
 from models.entity import Entity
+
 app = flask.Flask("")
 app.secret_key = os.urandom(24)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
@@ -103,7 +104,10 @@ def signup():
 
 
 
-@app.route('/login', methods=["GET", "POST"])
+
+
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if flask.request.method == "GET":
@@ -113,45 +117,26 @@ def login():
     password = flask.request.form.get('password')
     print(f"Received login request: {email}, {password}")
 
-    # Load users
+    if not email or not password:
+        return flask.jsonify({"status": "fail", "message": "Missing email or password"}), 400
+
     with open('users.json', 'r') as f:
-        try:
-            users = json.load(f)
-        except json.JSONDecodeError:
-            users = []
+        users = json.load(f)
 
-    # Load shelters
     with open('shelters.json', 'r') as f:
-        try:
-            shelters = json.load(f)
-        except json.JSONDecodeError:
-            shelters = []
+        shelters = json.load(f)
 
-    # Check users
     user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
-    if user:
-        temp = Entity()
-        temp.password = user['password']  # Assign stored (hashed) password
-        if temp.verify_password(password):
-            print(f"Login success for USER: {email}")
-            session["user_id"] = user["id"]
-            session["role"] = "user"
-            return redirect('/')  # redirect user to home
+    if user and Entity.verify_password(password, user['password']):
+        return flask.jsonify({"status": "success", "role": "user", "id": user["id"], "name": user["username"]})
 
-    # Check shelters
     shelter = next((s for s in shelters if s.get('email', '').lower() == email.lower()), None)
-    if shelter:
-        temp = Entity()
-        temp.password = shelter['password']
-        if temp.verify_password(password):
-            print(f"Login success for SHELTER: {email}")
-            session["user_id"] = shelter["id"]
-            session["role"] = "shelter"
-            return redirect('/dashboard')  # redirect shelter to dashboard
+    if shelter and Entity.verify_password(password, shelter['password']):
+        return flask.jsonify({"status": "success", "role": "shelter", "id": shelter["id"], "name": shelter["name"]})
 
-    # If login failed
-    print(f"Login failed for: {email}")
-    return get_html2("login")
+    return flask.jsonify({"status": "fail", "message": "Invalid email or password"}), 401
+
+
 
 
 

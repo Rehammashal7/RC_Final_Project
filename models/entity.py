@@ -30,10 +30,11 @@ class Entity:
                 return max(record["id"] for record in records) + 1
             except json.JSONDecodeError:
                 return 1
-
-    def manual_hash(self, password):
+    @staticmethod
+    def manual_hash(password):
         salt = "xyz123"
         return (password[::-1] + salt).upper()
 
-    def verify_password(self, input_password):
-        return self.password == self.manual_hash(input_password)
+    @staticmethod
+    def verify_password(input_password, stored_password):
+        return stored_password == Entity.manual_hash(input_password)
