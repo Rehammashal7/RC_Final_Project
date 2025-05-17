@@ -13,9 +13,16 @@ app = flask.Flask("")
 app.secret_key = os.urandom(24)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
+
+def get_html2(page_name):
+    html_file = open( "templates/"+ page_name + ".html")
+    content = html_file.read()
+    html_file.close()
+    return content
+
 def get_html(page_name):
-    html_file = open(page_name + ".html")
-    content=html_file.read()
+    html_file = open( page_name + ".html")
+    content = html_file.read()
     html_file.close()
     return content
 
@@ -109,7 +116,7 @@ def signup():
         else:
             return result["message"], 400
     else:
-        return get_html("signup")
+        return get_html2("signup")
 
 
 
@@ -117,7 +124,7 @@ def signup():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if flask.request.method == "GET":
-        return get_html("login")  # Show the login form
+        return get_html2("login")  # Show the login form
 
     email = flask.request.form.get('email')
     password = flask.request.form.get('password')
@@ -129,7 +136,7 @@ def login():
     user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
 
     if not user:
-        return get_html("login")
+        return get_html2("login")
 
     if hash_password(password) == user['password']:
         print(f"Login success for: {email}")
@@ -138,7 +145,7 @@ def login():
         return redirect('/')
     else:
         print(f"Login success for: {email}")
-        return get_html("login")
+        return get_html2("login")
 
 
 
@@ -146,7 +153,7 @@ def login():
 @app.route("/")
 def homepage():
     pets = load_pets()
-    html = get_html("index")
+    html = get_html2("index")
 
     # Pet cards
     pets_html = ""
