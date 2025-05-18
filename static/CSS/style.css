@@ -25,6 +25,7 @@ body, html {
 }
 
 .navbar-logo img {
+  
   height: 60px;
   object-fit: contain;
   width: 100px;
@@ -300,10 +301,7 @@ body, html {
         flex-direction: column;
         height: auto;
     }
-    .search-overlay {
-        width: 90%;
-        margin: 20px auto;
-    }
+    
     .animal-cards {
         position: static;
         transform: none;

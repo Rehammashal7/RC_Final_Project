@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add My Requests and Logout links
     navbar.innerHTML = `
       <a href="/my-requests">My Requests</a>
-      <a href="#" id="logoutBtn">Logout</a>
+      <a href="/logout" id="logoutBtn">Logout</a>
     `;
 
     // Logout logic

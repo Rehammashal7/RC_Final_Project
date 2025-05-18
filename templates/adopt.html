@@ -8,7 +8,7 @@
 <body>
   <div class="adopt-form-container">
     <h2>Adopt <!-- PET_NAME --></h2>
-    <form action="/submit-adoption" method="POST">
+    <form id="adoptionForm"  action="/submit-adoption" method="POST">
   <input type="text" name="full_name" placeholder="Your Full Name" required />
   <input type="email" name="email" placeholder="Your Email" required />
   <textarea name="reason" placeholder="Why do you want to adopt?"></textarea>
@@ -18,21 +18,14 @@
  
   <button type="submit">Submit Adoption Request</button>
 </form>
-
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const petId = urlParams.get("id");
-  if (petId) {
-    document.getElementById("pet_id_input").value = petId;
-  }
-
-  fetch("/get-session-user")
-    .then(res => res.json())
-    .then(data => {
-      if (data.user_id) {
-        document.getElementById("user_id_input").value = data.user_id;
-      }
-    });
+<div id="customAlert" class="custom-alert">
+  <div class="custom-alert-content">
+    <p id="alertMessage">Your alert message here</p>
+    <button id="alertCloseBtn" class="auth-btn">OK</button>
+  </div>
+</div>
+<script src="../static/JS/adoptionForm.js">
+  
 </script>
 
 

@@ -51,7 +51,8 @@ def save_pets(pets):
 def homepage():
     pets = load_pets()
     html = get_html2("index")
-
+    user_id = session.get("user_id")
+    print("Session shelter_id:", user_id)
     # Filter pets: show only those not adopted
     available_pets = [pet for pet in pets if not pet.get("adopted", False)]
 
@@ -197,7 +198,9 @@ def login():
 
 @app.route('/logout')
 def logout():
+    print("Logging out session:", dict(session))  # Add this
     session.clear()
+    print("Session after clear:", dict(session))  # Add this
     return redirect("/login")
 
 
@@ -400,35 +403,51 @@ def delete_pet():
 @app.route("/get-session-user")
 def get_session_user():
     if "user_id" in session:
-        return {"user_id": session["user_id"]}
-    return {"user_id": None}
+        return jsonify({"user_id": session["user_id"]})
+    elif "shelter_id" in session:
+        return jsonify({"shelter_id": session["shelter_id"]})
+    else:
+        return jsonify({})
+
+from flask import jsonify
 
 @app.route("/submit-adoption", methods=["POST"])
 def submit_adoption():
-    full_name = request.form.get("full_name")
+    user_id = request.form.get("user_id")
+    pet_id = request.form.get("pet_id")
     email = request.form.get("email")
     message = request.form.get("reason")
-    pet_id = request.form.get("pet_id")
-    user_id = request.form.get("user_id")
 
-    # Attempt to load pets.json
+    if not user_id:
+        return jsonify({"status": "error", "message": "You must be logged in to submit an adoption request."}), 401
+    print("Session shelter_id:", user_id)
+    # Load existing requests
+    try:
+        with open("data/requests.json", "r") as f:
+            existing_requests = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_requests = []
+
+    # Prevent duplicate requests
+    for req in existing_requests:
+        if str(req.get("user_id")) == str(user_id) and str(req.get("pet_id")) == str(pet_id):
+            return jsonify({
+                "status": "error",
+                "message": "You have already submitted a request for this pet."
+            }), 400
+
+    # Load pets to find shelter_id
     try:
         with open("data/pets.json", "r") as f:
             pets = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        return f"Error loading pet data: {str(e)}", 500
+        return jsonify({"status": "error", "message": f"Error loading pet data: {str(e)}"}), 500
 
-    # Find the shelter_id using the pet_id
-    shelter_id = None
-    for pet in pets:
-        if str(pet.get("id")) == str(pet_id):
-            shelter_id = pet.get("shelter_id")
-            break
-
+    shelter_id = next((pet["shelter_id"] for pet in pets if str(pet.get("id")) == str(pet_id)), None)
     if not shelter_id:
-        return "Error: Could not find shelter_id for the given pet_id", 400
+        return jsonify({"status": "error", "message": "Could not find shelter for the given pet."}), 400
 
-    # Create adoption request
+    # Create and save request
     adoption_request = AdoptionRequest(
         user_id=user_id,
         pet_id=pet_id,
@@ -438,7 +457,9 @@ def submit_adoption():
     )
 
     save_request_to_json(adoption_request)
-    return "Adoption request submitted!"
+    return jsonify({"status": "success", "message": "Your adoption request has been submitted successfully."})
+
+
 
 
 
