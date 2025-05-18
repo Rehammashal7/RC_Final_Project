@@ -178,7 +178,7 @@ def petDetails():
     if not pet:
         return "Pet not found", 404
 
-    html = get_html("pet")
+    html = get_html2("pet")
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     html = html.replace("<!-- PET_IMAGE -->", pet["image_url"])
     html = html.replace("<!-- PET_SPECIES -->", pet["species"])
@@ -198,7 +198,7 @@ def adopt_form():
     if not pet:
         return "Pet not found", 404
 
-    html = get_html("adopt")
+    html = get_html2("adopt")
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     return html
 
@@ -267,7 +267,7 @@ def add_pet():
         age = int(age_raw)
 
         #  Get shelter ID from session
-        shelter_id = 1
+        shelter_id = session.get("shelter_id")
         if not shelter_id:
             return "You must be logged in as a shelter to add a pet", 403
 
