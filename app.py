@@ -1,10 +1,9 @@
 
 import flask,json,hashlib
 from models.user import User
-from Requests import AdoptionRequest, save_request_to_json
-from pathlib import Path
-from flask import  redirect, request,session,jsonify
-from pet import Pet
+from models.Requests import AdoptionRequest, save_request_to_json
+from flask import  redirect, request,session
+from models.pet import Pet
 import os
 from werkzeug.utils import secure_filename
 from models.shelter import Shelter
@@ -33,7 +32,7 @@ def get_html(page_name):
 
 
 def load_pets():
-    petsdb=open("pets.json")
+    petsdb=open("data/pets.json")
     pets=petsdb.read()
     petsdb.close()
     pets=json.loads(pets)
@@ -42,7 +41,7 @@ def load_pets():
 
 
 def save_pets(pets):
-    with open("pets.json", "w") as f:
+    with open("data/pets.json", "w") as f:
         json.dump(pets, f, indent=2)
 
 
@@ -127,10 +126,10 @@ def login():
     if not email or not password:
         return flask.jsonify({"status": "fail", "message": "Missing email or password"}), 400
 
-    with open('users.json', 'r') as f:
+    with open('data/users.json', 'r') as f:
         users = json.load(f)
 
-    with open('shelters.json', 'r') as f:
+    with open('data/shelters.json', 'r') as f:
         shelters = json.load(f)
 
     user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
@@ -378,7 +377,7 @@ def submit_adoption():
 
     # Attempt to load pets.json
     try:
-        with open("pets.json", "r") as f:
+        with open("data/pets.json", "r") as f:
             pets = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         return f"Error loading pet data: {str(e)}", 500
@@ -413,10 +412,10 @@ def my_requests():
     if not user_id:
         return redirect("/login")
 
-    with open("requests.json") as f:
+    with open("data/requests.json") as f:
         requests_data = json.load(f)
 
-    with open("pets.json") as f:
+    with open("data/pets.json") as f:
         pets_data = json.load(f)
         pets_dict = {str(pet["id"]): pet for pet in pets_data}
 
@@ -446,10 +445,10 @@ def shelter_requests():
     if not shelter_id:
         return redirect("/login")
 
-    with open("requests.json") as f:
+    with open("data/requests.json") as f:
         requests_data = json.load(f)
 
-    with open("pets.json") as f:
+    with open("data/pets.json") as f:
         pets_data = json.load(f)
         pets_dict = {str(pet["id"]): pet for pet in pets_data}
 
@@ -494,7 +493,7 @@ def update_request_status():
     if not timestamp or not new_status:
         return "Invalid request", 400
 
-    with open("requests.json", "r+") as f:
+    with open("data/requests.json", "r+") as f:
         data = json.load(f)
         for req in data:
             if req["timestamp"] == timestamp:

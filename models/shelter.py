@@ -1,7 +1,7 @@
 from models.entity import Entity
 
 class Shelter(Entity):
-    file_path = "shelters.json"
+    file_path = "../data/shelters.json"
 
     def __init__(self, name, email, raw_password):
         if len(raw_password) < 8:
