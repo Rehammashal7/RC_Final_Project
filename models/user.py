@@ -1,7 +1,13 @@
+import os
 from models.entity import Entity
 
 class User(Entity):
-    file_path = "../data/users.json"
+    file_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data",
+        "users.json"
+    )
+
 
     def __init__(self, username, email, raw_password):
         if len(raw_password) < 8:

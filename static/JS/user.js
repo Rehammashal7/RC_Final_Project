@@ -1,3 +1,9 @@
+
+
+
+
+
+
 let currentFilter = null;
 
 function filterPets(species) {

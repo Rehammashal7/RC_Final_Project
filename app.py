@@ -2,7 +2,7 @@
 import flask,json,hashlib
 from models.user import User
 from models.Requests import AdoptionRequest, save_request_to_json
-from flask import  redirect, request,session
+from flask import  jsonify, redirect, request,session
 from models.pet import Pet
 import os
 from werkzeug.utils import secure_filename
@@ -46,14 +46,18 @@ def save_pets(pets):
 
 
 
+
 @app.route("/")
 def homepage():
     pets = load_pets()
     html = get_html2("index")
 
+    # Filter pets: show only those not adopted
+    available_pets = [pet for pet in pets if not pet.get("adopted", False)]
+
     # Pet cards
     pets_html = ""
-    for pet in pets:
+    for pet in available_pets:
         pets_html += f'''<div class="card" data-species="{pet['species']}">
             <img src="{pet['image_url']}" alt="{pet['name']}">
             <div class="card-content">
@@ -78,7 +82,6 @@ def homepage():
 
     return html
 
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -90,21 +93,54 @@ def signup():
         role = data.get("role")
 
         if not email or not password or not username:
-            return "Please complete all fields.", 400
+            return redirect("/signup?error=incomplete")
 
         if len(password) < 8:
-            return "Password must be at least 8 characters.", 400
+            return redirect("/signup?error=short_password")
 
+        email_exists = False
+        user_id = None
+
+        user_file = os.path.join("data", "users.json")
+        if os.path.exists(user_file):
+            with open(user_file, "r") as f:
+                users = json.load(f)
+                for user in users:
+                    if user.get("email") == email:
+                        email_exists = True
+
+        shelter_file = os.path.join("data", "shelters.json")
+        if os.path.exists(shelter_file):
+            with open(shelter_file, "r") as f:
+                shelters = json.load(f)
+                for shelter in shelters:
+                    if shelter.get("email") == email:
+                        email_exists = True
+
+        if email_exists:
+            return redirect(f"/signup?error=email_exists&email={email}")
+
+        # Save new user/shelter and set session
         if role == "shelter":
             shelter = Shelter(username, email, password)
             shelter.save()
+            session.permanent = True
+            session["shelter_id"] = shelter.id
+            session["username"] = shelter.name
+            session["role"] = "shelter"
+            return jsonify({"status": "success", "role": "shelter", "id": shelter.id, "name": shelter.name})
         else:
             user = User(username, email, password)
             user.save()
-
-        return redirect("/")
+            session.permanent = True
+            session["user_id"] = user.id
+            session["username"] = user.username
+            session["role"] = "user"
+            return jsonify({"status": "success", "role": "user", "id": user.id, "name": user.username})
 
     return get_html2("signup")
+
+
 
 
 
@@ -484,26 +520,44 @@ def shelter_requests():
     html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
     return html
 
-
 @app.route("/update-request-status", methods=["POST"])
 def update_request_status():
     timestamp = request.form.get("timestamp")
     new_status = request.form.get("status")
 
-    if not timestamp or not new_status:
-        return "Invalid request", 400
+    # Load requests
+    with open("data/requests.json", "r") as f:
+        requests_data = json.load(f)
 
-    with open("data/requests.json", "r+") as f:
-        data = json.load(f)
-        for req in data:
-            if req["timestamp"] == timestamp:
-                req["status"] = new_status
-                break
-        f.seek(0)
-        f.truncate()
-        json.dump(data, f, indent=4)
+    # Load pets
+    with open("data/pets.json", "r") as f:
+        pets_data = json.load(f)
+
+    # Update request status
+    for r in requests_data:
+        if r["timestamp"] == timestamp:
+            r["status"] = new_status
+
+            if new_status == "Accepted":
+                pet_id = r["pet_id"]
+
+                # Find the pet and mark as adopted
+                for pet in pets_data:
+                    if str(pet["id"]) == str(pet_id):
+                        pet["adopted"] = True
+                        break
+            break
+
+    # Save updated requests
+    with open("data/requests.json", "w") as f:
+        json.dump(requests_data, f, indent=2)
+
+    # Save updated pets
+    with open("data/pets.json", "w") as f:
+        json.dump(pets_data, f, indent=2)
 
     return redirect("/shelterRequestes")
+
 
 
 

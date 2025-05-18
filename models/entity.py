@@ -2,7 +2,7 @@ import json
 import os
 
 class Entity:
-    file_path = ""  # Must be set by subclasses
+    file_path = ""  
 
     def save(self):
         records = []
@@ -30,10 +30,12 @@ class Entity:
                 return max(record["id"] for record in records) + 1
             except json.JSONDecodeError:
                 return 1
+
     @staticmethod
     def manual_hash(password):
         salt = "xyz123"
-        return (password[::-1] + salt).upper()
+        reversed_password = ''.join(reversed(password))  
+        return (reversed_password + salt).upper()
 
     @staticmethod
     def verify_password(input_password, stored_password):

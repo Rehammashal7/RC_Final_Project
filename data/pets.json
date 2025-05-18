@@ -35,7 +35,7 @@
     "species": "Cat",
     "age": 4,
     "image_url": "/static/images/cats/cat4.jpg",
-    "adopted": false,
+    "adopted": true,
     "shelter_id": 1,
     "about": "Quiet and independent, ideal for calm homes."
   },
@@ -98,16 +98,6 @@
     "adopted": false,
     "shelter_id": 3,
     "about": "Laid-back and affectionate lap cat."
-  },
-  {
-    "id": 11,
-    "name": "Buddy",
-    "species": "Dog",
-    "age": 1,
-    "image_url": "/static/images/dogs/OIP.jpeg",
-    "adopted": false,
-    "shelter_id": 3,
-    "about": "Energetic and fun-loving, perfect for active families."
   },
   {
     "id": 12,

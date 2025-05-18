@@ -30,7 +30,42 @@ body {
   .account-links a:hover {
     color: #ffffff;
   }
-  
+  /* Radio Button Group Styles */
+/* Radio Button Group Styles */
+.radio-group {
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+/* Container for all radio options */
+.radio-options {
+  display: grid;
+  grid-template-columns: repeat(2, auto); /* Two radios per row */
+  gap: 20px 60px; /* vertical gap, horizontal gap */
+  margin-top: 10px;
+  justify-content: center; /* Center items horizontally */
+  direction: rtl; /* Ensures RTL alignment */
+}
+
+/* Each radio option label */
+.radio-options label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  gap: 10px;
+  user-select: none;
+}
+
+/* The actual radio input */
+.radio-options input[type="radio"] {
+  accent-color: #b83eb8;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
 
   .auth-container {
     max-width: 400px;
@@ -139,6 +174,31 @@ body {
     color: #b83eb8;
     text-decoration: underline;
   }
+  .custom-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.input-error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 4px;
+  display: block;
+}
+
+.input-error-border {
+  border: 1px solid #d32f2f !important;
+}
+
+
   
   /* Responsive Design */
   @media (max-width: 480px) {
@@ -192,3 +252,40 @@ body {
     margin-bottom: 20px;
     font-weight: bold;
   }
+  .custom-alert {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.custom-alert-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 300px;
+}
+
+.custom-alert-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#alertCloseBtn {
+  width: 100%;
+}
+
+
+@media (max-width: 480px) {
+  .radio-options {
+    grid-template-columns: 1fr;
+    gap: 14px 0;
+  }
+ }
