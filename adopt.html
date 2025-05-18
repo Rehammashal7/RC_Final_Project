@@ -14,13 +14,18 @@
   <textarea name="reason" placeholder="Why do you want to adopt?"></textarea>
 
   <input type="hidden" name="user_id" id="user_id_input" />
-  <input type="hidden" name="pet_id" value="123" />
-  <input type="hidden" name="shelter_id" value="456" />
-
+  <input type="hidden" name="pet_id" id="pet_id_input" />
+ 
   <button type="submit">Submit Adoption Request</button>
 </form>
 
 <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const petId = urlParams.get("id");
+  if (petId) {
+    document.getElementById("pet_id_input").value = petId;
+  }
+
   fetch("/get-session-user")
     .then(res => res.json())
     .then(data => {
@@ -29,6 +34,8 @@
       }
     });
 </script>
+
+
 
   </div>
 </body>

@@ -9,9 +9,13 @@ import os
 from werkzeug.utils import secure_filename
 from models.shelter import Shelter
 from models.entity import Entity
+from datetime import timedelta
+
+
 
 app = flask.Flask("")
-app.secret_key = os.urandom(24)
+app.secret_key = "my-secret-123"
+app.permanent_session_lifetime = timedelta(days=7)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 
@@ -128,10 +132,18 @@ def login():
 
     user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
     if user and Entity.verify_password(password, user['password']):
+        session.permanent = True
+        session["user_id"] = user["id"]
+        session["username"] = user["username"]
+        session["role"] = "user"
         return flask.jsonify({"status": "success", "role": "user", "id": user["id"], "name": user["username"]})
 
     shelter = next((s for s in shelters if s.get('email', '').lower() == email.lower()), None)
     if shelter and Entity.verify_password(password, shelter['password']):
+        session.permanent = True
+        session["shelter_id"] = shelter["id"]
+        session["username"] = shelter["name"]
+        session["role"] = "shelter"
         return flask.jsonify({"status": "success", "role": "shelter", "id": shelter["id"], "name": shelter["name"]})
 
     return flask.jsonify({"status": "fail", "message": "Invalid email or password"}), 401
@@ -145,10 +157,11 @@ def login():
 
 
 
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    session.pop("user_id", None)
-    return redirect("/")
+    session.clear()
+    return redirect("/login")
+
 
 
 @app.route("/pet")
@@ -187,79 +200,45 @@ def adopt_form():
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     return html
 
-@app.route("/shelter-signup", methods=["GET", "POST"])
-def shelter_signup():
-    if flask.request.method == "POST":
-        data = flask.request.form
-        email = data.get("email")
-        password = data.get("password")
 
-        if not email or not password:
-            return "Please enter both email and password", 400
-
-        
-
-        file_path = Path("shelters.json")
-        if not file_path.exists():
-            file_path.write_text("[]")
-
-        with open(file_path, "r") as f:
-            try:
-                shelters = json.load(f)
-            except json.JSONDecodeError:
-                shelters = []
-
-        # Check if email already exists
-        for s in shelters:
-            if s["email"] == email:
-                return "Shelter already registered", 400
-
-        # Assign unique ID
-        next_id = max((s.get("id", 0) for s in shelters), default=0) + 1
-
-        new_shelter = {
-            "id": next_id,
-            "email": email,
-            "password": password
-        }
-
-        shelters.append(new_shelter)
-        with open(file_path, "w") as f:
-            json.dump(shelters, f, indent=2)
-
-        # Store shelter session
-        flask.session["shelter_id"] = next_id
-        return redirect("shelter-dashboard")
-
-    return get_html("shelter-signup")
+    
 @app.route("/dashboard")
 def dashboard():
-    shelter_id = 1  # later: get from session
+    shelter_id = session.get("shelter_id")
+    print("Session shelter_id:", shelter_id)
+    
+    #  Debug print
+
+
     pets = load_pets()
     my_pets = [pet for pet in pets if pet.get("shelter_id") == shelter_id]
 
-    html = get_html("dashboard")
+    html = get_html2("dashboard")
     pets_html = ""
 
-    for pet in my_pets:
-        pets_html += f"""
-        <div class="dashboard-card" id="pet-{pet['id']}">
-            <h3>{pet['name']}</h3>
-            <img src="{pet['image_url']}" alt="Pet image">
-            <p>Species: {pet['species']}</p>
-            <p>Age: {pet['age']}</p>
-            <p>About: {pet.get('about', '')}</p>
-            <p>Status: {'Adopted' if pet['adopted'] else 'Available'}</p>
+    if not my_pets:
+        pets_html = "<p style='text-align:center; margin-top:20px;'>No pets found for your shelter. Add one using the button above!</p>"
+    else:
+        for pet in my_pets:
+            pets_html += f"""
+            <div class="dashboard-card" id="pet-{pet['id']}">
+                <h3>{pet['name']}</h3>
+                <img src="{pet['image_url']}" alt="Pet image">
+                <p>Species: {pet['species']}</p>
+                <p>Age: {pet['age']}</p>
+                <p>About: {pet.get('about', '')}</p>
+                <p>Status: {'Adopted' if pet.get('adopted') else 'Available'}</p>
 
-            <div class="dashboard-actions">
-                <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
-                <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
+                <div class="dashboard-actions">
+                    <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
+                    <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
+                </div>
             </div>
-        </div>
-        """
+            """
 
     html = html.replace("<!-- PETS_PLACEHOLDER -->", pets_html)
     return html
+
 
 
 
@@ -378,33 +357,31 @@ def delete_pet():
     save_pets(updated_pets)
 
     return redirect("/dashboard")
+
+
 @app.route("/get-session-user")
 def get_session_user():
     if "user_id" in session:
         return {"user_id": session["user_id"]}
     return {"user_id": None}
+
 @app.route("/submit-adoption", methods=["POST"])
 def submit_adoption():
     full_name = request.form.get("full_name")
     email = request.form.get("email")
     message = request.form.get("reason")
-    pet_id = request.args.get("pet_id") or request.form.get("pet_id")
-    shelter_id = request.args.get("shelter_id") or request.form.get("shelter_id")
-
-    # Example: user_id comes from localStorage (passed in form hidden input)
+    pet_id = request.form.get("pet_id")  
     user_id = request.form.get("user_id")
 
-    # Create and save the request
     adoption_request = AdoptionRequest(
         user_id=user_id,
         pet_id=pet_id,
-        shelter_id=shelter_id,
         email=email,
         message=message
     )
 
     save_request_to_json(adoption_request)
-
     return "Adoption request submitted!"
+
 
 

@@ -96,7 +96,7 @@
     "age": 6,
     "image_url": "/static/images/cats/cat10.jpg",
     "adopted": false,
-    "shelter_id": 1,
+    "shelter_id": 3,
     "about": "Laid-back and affectionate lap cat."
   },
   {
@@ -126,7 +126,7 @@
     "age": 2,
     "image_url": "/static/images/dogs/dog3.webp",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 3,
     "about": "Loves to play fetch and learn new tricks."
   },
   {
@@ -136,7 +136,7 @@
     "age": 5,
     "image_url": "/static/images/dogs/dog4.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 3,
     "about": "Calm and sweet, great for seniors."
   },
   {
@@ -146,7 +146,7 @@
     "age": 1,
     "image_url": "/static/images/dogs/dog5.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 5,
     "about": "Very smart, picks up training fast."
   },
   {
@@ -156,7 +156,7 @@
     "age": 4,
     "image_url": "/static/images/dogs/dog6.webp",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 4,
     "about": "Gentle giant who loves attention."
   },
   {
@@ -176,7 +176,7 @@
     "age": 2,
     "image_url": "/static/images/dogs/dog8.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 3,
     "about": "Loves belly rubs and long walks."
   },
   {
@@ -196,7 +196,7 @@
     "age": 4,
     "image_url": "/static/images/dogs/dog10.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 3,
     "about": "Friendly and cheerful, loves everyone."
   }
 ]

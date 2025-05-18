@@ -1,0 +1,220 @@
+/* Base Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f3f6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+/* Navbar */
+.navbar {
+    background-color: #b83eb8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-logo img {
+    height: 50px;
+    filter: brightness(0) invert(1); /* Make logo white if it's dark */
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-links a,
+.welcome-text {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.navbar-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.welcome-text {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #2c3e50;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn {
+    background-color: #b83eb8;
+}
+
+.add-btn:hover {
+    background-color: #b83eb8;
+}
+
+.requests-btn {
+    background-color: #b83eb8;
+}
+
+.requests-btn:hover {
+    background-color: #b83eb8;
+}
+
+.logout-btn {
+    background-color: #b83eb8;
+}
+
+.logout-btn:hover {
+    background-color: #b83eb8;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.dashboard-container h1 {
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.dashboard-pets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* Pet Card */
+.dashboard-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+    text-align: center;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-card img {
+    max-width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card h3 {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.dashboard-card p {
+    color: #555;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+/* Card Buttons */
+.dashboard-actions {
+    margin-top: 15px;
+}
+
+.edit-btn {
+    background-color: #de7ede;
+}
+
+.edit-btn:hover {
+    background-color: #af3caf;
+}
+
+.delete-btn {
+    background-color: #de7ede;
+}
+
+.delete-btn:hover {
+    background-color: #b83eb8;
+}
+
+/* Modal Styles (Optional for later) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    padding: 30px;
+    background: #fff;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Modal Buttons */
+.save-btn,
+.cancel-btn {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.save-btn {
+    background-color: #b83eb8;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #b83eb8;
+    color: white;
+    margin-left: 10px;
+}
