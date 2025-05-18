@@ -69,7 +69,10 @@ def homepage():
 
     # Navbar links
     if "user_id" in session:
-        navbar_links = '<a href="/logout">Logout</a>'
+        navbar_links =''' 
+        <a href="/my-requests">My Requests</a>
+        <a href="/logout">Logout</a>
+        '''
     else:
         navbar_links = '<a href="/signup">Sign Up</a><a href="/login">Login</a>'
     html = html.replace("<!-- NAVBAR_LINKS -->", navbar_links)
@@ -382,6 +385,40 @@ def submit_adoption():
 
     save_request_to_json(adoption_request)
     return "Adoption request submitted!"
+
+@app.route("/my-requests")
+def my_requests():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect("/login")
+
+    with open("requests.json") as f:
+        requests_data = json.load(f)
+
+    with open("pets.json") as f:
+        pets_data = json.load(f)
+        pets_dict = {str(pet["id"]): pet for pet in pets_data}
+
+    my_requests = [r for r in requests_data if str(r["user_id"]) == str(user_id)]
+
+    cards_html = ""
+    for r in my_requests:
+        pet = pets_dict.get(str(r["pet_id"]), {"name": "Unknown", "species": "", "image_url": ""})
+        status = r.get("status", "Pending")
+        cards_html += f"""
+        <div class="request-card">
+            <h3>{pet['name']} ({pet['species']})</h3>
+            <img src="{pet.get('image_url', '')}" alt="Pet image" />
+            <p><strong>Message:</strong> {r['message']}</p>
+            <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
+            <p>Status: <span class="status {status}">{status}</span></p>
+        </div>
+        """
+
+    html = get_html2("requests")  # Load the HTML template
+    html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
+    return html
+
 
 
 

@@ -39,30 +39,33 @@ function filterPets(species) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-      const userId = localStorage.getItem("user_id");
-      const username = localStorage.getItem("username");
-console.log(localStorage.getItem("username"))
-      const navbar = document.getElementById("navbarLinks");
-      const welcome = document.getElementById("welcomeMessage");
+  const userId = localStorage.getItem("user_id");
+  const username = localStorage.getItem("username");
 
-      if (userId && username) {
-        // Logged in: show logout and welcome message
-        navbar.innerHTML = `<a href="#" id="logoutBtn">Logout</a>`;
-        welcome.textContent = `Welcome, ${username}`;
+  const navbar = document.getElementById("navbarLinks");
+  const welcome = document.getElementById("welcomeMessage");
 
-       // welcome.style.display = "block";
+  if (userId && username) {
+    // Set welcome message
+    welcome.textContent = `Welcome, ${username}`;
+    welcome.style.display = "inline";
 
-        // Logout logic
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-          localStorage.clear();
-          window.location.href = "/";
-        });
-      } else {
-        // Not logged in
-        navbar.innerHTML = `
-          <a href="/login">Login</a>
-          <a href="/signup">Sign Up</a>
-        `;
-        welcome.style.display = "none";
-      }
+    // Add My Requests and Logout links
+    navbar.innerHTML = `
+      <a href="/my-requests">My Requests</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    `;
+
+    // Logout logic
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "/";
     });
+  } else {
+    navbar.innerHTML = `
+      <a href="/login">Login</a>
+      <a href="/signup">Sign Up</a>
+    `;
+    welcome.style.display = "none";
+  }
+});

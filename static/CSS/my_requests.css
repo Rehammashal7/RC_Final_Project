@@ -1,0 +1,64 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.request-card {
+  background: #ffffff;
+  padding: 20px;
+  margin: 15px auto;
+  width: 85%;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.request-card:hover {
+  transform: translateY(-3px);
+}
+
+.request-card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.request-card img {
+  max-width: 150px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.request-card p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.status.Pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.Accepted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.Refused {
+  background: #f8d7da;
+  color: #721c24;
+}
