@@ -373,18 +373,39 @@ def submit_adoption():
     full_name = request.form.get("full_name")
     email = request.form.get("email")
     message = request.form.get("reason")
-    pet_id = request.form.get("pet_id")  
+    pet_id = request.form.get("pet_id")
     user_id = request.form.get("user_id")
 
+    # Attempt to load pets.json
+    try:
+        with open("pets.json", "r") as f:
+            pets = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        return f"Error loading pet data: {str(e)}", 500
+
+    # Find the shelter_id using the pet_id
+    shelter_id = None
+    for pet in pets:
+        if str(pet.get("id")) == str(pet_id):
+            shelter_id = pet.get("shelter_id")
+            break
+
+    if not shelter_id:
+        return "Error: Could not find shelter_id for the given pet_id", 400
+
+    # Create adoption request
     adoption_request = AdoptionRequest(
         user_id=user_id,
         pet_id=pet_id,
+        shelter_id=shelter_id,
         email=email,
         message=message
     )
 
     save_request_to_json(adoption_request)
     return "Adoption request submitted!"
+
+
 
 @app.route("/my-requests")
 def my_requests():
@@ -419,6 +440,71 @@ def my_requests():
     html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
     return html
 
+@app.route("/shelterRequestes")
+def shelter_requests():
+    shelter_id = session.get("shelter_id")
+    if not shelter_id:
+        return redirect("/login")
+
+    with open("requests.json") as f:
+        requests_data = json.load(f)
+
+    with open("pets.json") as f:
+        pets_data = json.load(f)
+        pets_dict = {str(pet["id"]): pet for pet in pets_data}
+
+    # Filter requests for this shelter
+    my_requests = []
+    for r in requests_data:
+        if str(r.get("shelter_id")) == str(shelter_id):
+            if 'status' not in r:
+                r['status'] = "Pending"  # Default value
+            my_requests.append(r)
+
+    # Build HTML cards
+    cards_html = ""
+    for r in my_requests:
+        pet = pets_dict.get(str(r["pet_id"]), {"name": "Unknown", "species": "", "image_url": ""})
+        cards_html += f"""
+        <div class="request-card">
+            <h3>{pet['name']} ({pet['species']})</h3>
+            <img src="{pet.get('image_url', '')}" alt="Pet image" />
+            <p><strong>From:</strong> {r['email']}</p>
+            <p><strong>Message:</strong> {r['message']}</p>
+            <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
+            <p>Status: <span class="status {r['status']}">{r['status']}</span></p>
+            <form action="/update-request-status" method="POST">
+                <input type="hidden" name="timestamp" value="{r['timestamp']}" />
+                <button name="status" value="Accepted" class="btn accept-btn">✅ Accept</button>
+                <button name="status" value="Refused" class="btn refuse-btn">❌ Refuse</button>
+            </form>
+        </div>
+        """
+
+    html = get_html2("shelterRequestes")
+    html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
+    return html
+
+
+@app.route("/update-request-status", methods=["POST"])
+def update_request_status():
+    timestamp = request.form.get("timestamp")
+    new_status = request.form.get("status")
+
+    if not timestamp or not new_status:
+        return "Invalid request", 400
+
+    with open("requests.json", "r+") as f:
+        data = json.load(f)
+        for req in data:
+            if req["timestamp"] == timestamp:
+                req["status"] = new_status
+                break
+        f.seek(0)
+        f.truncate()
+        json.dump(data, f, indent=4)
+
+    return redirect("/shelterRequestes")
 
 
 

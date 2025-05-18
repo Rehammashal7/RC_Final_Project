@@ -66,7 +66,7 @@
     "age": 5,
     "image_url": "/static/images/cats/cat7.jpg",
     "adopted": false,
-    "shelter_id": 1,
+    "shelter_id": 3,
     "about": "Senior cat, calm and loving companion."
   },
   {
@@ -106,7 +106,7 @@
     "age": 1,
     "image_url": "/static/images/dogs/OIP.jpeg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 3,
     "about": "Energetic and fun-loving, perfect for active families."
   },
   {
@@ -170,16 +170,6 @@
     "about": "Fun-loving and eager to please."
   },
   {
-    "id": 18,
-    "name": "Sadie",
-    "species": "Dog",
-    "age": 2,
-    "image_url": "/static/images/dogs/dog8.jpg",
-    "adopted": false,
-    "shelter_id": 3,
-    "about": "Loves belly rubs and long walks."
-  },
-  {
     "id": 19,
     "name": "Toby",
     "species": "Dog",
@@ -190,13 +180,13 @@
     "about": "Great with kids, very patient and kind."
   },
   {
-    "id": 20,
-    "name": "Rosie",
-    "species": "Dog",
-    "age": 4,
-    "image_url": "/static/images/dogs/dog10.jpg",
+    "id": 21,
+    "name": "Lolo",
+    "species": "cat",
+    "age": 11,
+    "image_url": "/static/images/test.PNG",
     "adopted": false,
-    "shelter_id": 3,
-    "about": "Friendly and cheerful, loves everyone."
+    "shelter_id": 1,
+    "about": "lalalal"
   }
 ]
