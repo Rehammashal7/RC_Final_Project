@@ -507,37 +507,41 @@ def shelter_requests():
         pets_data = json.load(f)
         pets_dict = {str(pet["id"]): pet for pet in pets_data}
 
-    # Filter requests for this shelter
     my_requests = []
     for r in requests_data:
         if str(r.get("shelter_id")) == str(shelter_id):
-            if 'status' not in r:
-                r['status'] = "Pending"  # Default value
-            my_requests.append(r)
+            status = r.get('status', 'Pending')
+            if status == 'Pending':
+                r['status'] = 'Pending'  # Ensure status field exists
+                my_requests.append(r)
 
-    # Build HTML cards
-    cards_html = ""
+    cards_html = '<div class="cards-container">'
     for r in my_requests:
         pet = pets_dict.get(str(r["pet_id"]), {"name": "Unknown", "species": "", "image_url": ""})
         cards_html += f"""
         <div class="request-card">
             <h3>{pet['name']} ({pet['species']})</h3>
             <img src="{pet.get('image_url', '')}" alt="Pet image" />
-            <p><strong>From:</strong> {r['email']}</p>
-            <p><strong>Message:</strong> {r['message']}</p>
-            <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
-            <p>Status: <span class="status {r['status']}">{r['status']}</span></p>
-            <form action="/update-request-status" method="POST">
-                <input type="hidden" name="timestamp" value="{r['timestamp']}" />
-                <button name="status" value="Accepted" class="btn accept-btn">✅ Accept</button>
-                <button name="status" value="Refused" class="btn refuse-btn">❌ Refuse</button>
-            </form>
+            <div class="request-info">
+                <p><strong>From:</strong> {r['email']}</p>
+                <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
+                <p><strong>Status:</strong> <span class="status {r['status']}">{r['status']}</span></p>
+                <form action="/update-request-status" method="POST" class="action-form">
+                    <input type="hidden" name="timestamp" value="{r['timestamp']}" />
+                    <button name="status" value="Accepted" class="accept-btn">Accept</button>
+                    <button name="status" value="Refused" class="refuse-btn">Refuse</button>
+                </form>
+            </div>
         </div>
         """
+    cards_html += '</div>'
 
     html = get_html2("shelterRequestes")
     html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
     return html
+
+
+
 
 @app.route("/update-request-status", methods=["POST"])
 def update_request_status():
