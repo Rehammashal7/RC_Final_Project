@@ -6,7 +6,4 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!userId) {
     window.location.href = "/login";
   }
-
-  // Optionally show user info
-  console.log("Logged in as:", username, "Role:", role);
 });
