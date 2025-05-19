@@ -1,3 +1,6 @@
+import json
+
+
 class Pet:
     def __init__(self, id, name, species, age, image_url, adopted, shelter_id, about):
         self.id = id
@@ -19,4 +22,18 @@ class Pet:
             "adopted": self.adopted,
             "shelter_id": self.shelter_id,
             "about": self.about
-        }
+     
+       }
+    @staticmethod
+    def load_pets():
+        petsdb=open("data/pets.json")
+        pets=petsdb.read()
+        petsdb.close()
+        pets=json.loads(pets)
+        return pets
+
+
+    @staticmethod
+    def save_pets(pets):
+        with open("data/pets.json", "w") as f:
+            json.dump(pets, f, indent=2)

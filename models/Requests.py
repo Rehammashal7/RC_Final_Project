@@ -23,15 +23,15 @@ class AdoptionRequest:
             "status": self.status
         }
 
-def save_request_to_json(adoption_request):
-    try:
-        with open("data/requests.json", "r") as f:
-            existing = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        existing = []
+    def save_to_json(self):
+        try:
+            with open("data/requests.json", "r") as f:
+                existing = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            existing = []
 
-    existing.append(adoption_request.to_dict())
+        existing.append(self.to_dict())
 
-    with open("data/requests.json", "w") as f:
-        json.dump(existing, f, indent=2)
+        with open("data/requests.json", "w") as f:
+            json.dump(existing, f, indent=2)
 

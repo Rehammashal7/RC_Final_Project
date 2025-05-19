@@ -25,5 +25,14 @@
     "timestamp": "2025-05-19T09:52:03.575832",
     "days_since": "0 days ago",
     "status": "Accepted"
+  },
+  {
+    "user_id": "2",
+    "pet_id": "4",
+    "email": "khaled@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T12:36:57.796137",
+    "days_since": "0 days ago",
+    "status": "Pending"
   }
 ]

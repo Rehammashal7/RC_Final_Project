@@ -1,9 +1,14 @@
 [
-  
   {
     "id": 1,
     "username": "Reham",
     "email": "rere@gmail.com",
     "password": "LAHSAMMAHERXYZ123"
+  },
+  {
+    "id": 2,
+    "username": "khaled",
+    "email": "khaled@gmail.com",
+    "password": "\u00dcPOIUZTREWQXYZ123"
   }
 ]

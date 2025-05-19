@@ -1,7 +1,7 @@
 
 import flask,json
 from models.user import User
-from models.Requests import AdoptionRequest, save_request_to_json
+from models.Requests import AdoptionRequest
 from flask import  jsonify, redirect, request,session
 from models.pet import Pet
 import os
@@ -24,28 +24,15 @@ def get_html(page_name):
     return content
 
 
-def load_pets():
-    petsdb=open("data/pets.json")
-    pets=petsdb.read()
-    petsdb.close()
-    pets=json.loads(pets)
-    return pets
 
-
-
-def save_pets(pets):
-    with open("data/pets.json", "w") as f:
-        json.dump(pets, f, indent=2)
 
 
 
 
 @app.route("/")
 def homepage():
-    pets = load_pets()
+    pets = Pet.load_pets()
     html = get_html("index")
-    user_id = session.get("user_id")
-    print("Session shelter_id:", user_id)
 
     # Filter pets: show only those not adopted
     available_pets = [pet for pet in pets if not pet.get("adopted", False)]
@@ -151,7 +138,7 @@ def login():
 
     email = flask.request.form.get('email')
     password = flask.request.form.get('password')
-    print(f"Received login request: {email}, {password}")
+   
 
     if not email or not password:
         return flask.jsonify({"status": "fail", "message": "Missing email or password"}), 400
@@ -195,7 +182,7 @@ def petDetails():
     if not pet_id:
         return "Pet ID not provided", 400
 
-    pets = load_pets()
+    pets = Pet.load_pets()
     pet = next((p for p in pets if str(p["id"]) == pet_id), None)
 
     if not pet:
@@ -220,16 +207,10 @@ def petDetails():
 def dashboard():
     if "shelter_id" not in session :
         return redirect("/login")  
-
-    
-    
     shelter_id = session.get("shelter_id")
-    
-    
+
     #  Debug print
-
-
-    pets = load_pets()
+    pets =Pet.load_pets()
     my_pets = [pet for pet in pets if pet.get("shelter_id") == shelter_id]
 
     html = get_html("dashboard")
@@ -288,7 +269,7 @@ def add_pet():
         if not shelter_id:
             return "You must be logged in as a shelter to add a pet", 403
 
-        pets = load_pets()
+        pets =Pet.load_pets()
         next_id = max((pet.get("id") or 0 for pet in pets), default=0) + 1        #  Create pet object
         pet = Pet(
             id=next_id,
@@ -304,7 +285,7 @@ def add_pet():
         #  Save
        
         pets.append(pet.to_dict())
-        save_pets(pets)
+        Pet.save_pets(pets)
 
         return redirect("/dashboard")
 
@@ -314,7 +295,7 @@ def add_pet():
 def edit_pet():
     if "shelter_id" not in session :
         return redirect("/login")  
-    pets = load_pets()
+    pets = Pet.load_pets()
 
     if flask.request.method == "GET":
         pet_id = int(flask.request.args.get("id"))
@@ -360,7 +341,7 @@ def edit_pet():
                     file.save(path)
                     pet["image_url"] = "/" + path.replace("\\", "/")
 
-                save_pets(pets)
+                Pet.save_pets(pets)
                 break
 
         return redirect("/dashboard")
@@ -374,10 +355,10 @@ def delete_pet():
     if not pet_id:
         return "Pet ID is required", 400
 
-    pets = load_pets()
+    pets = Pet.load_pets()
     updated_pets = [pet for pet in pets if str(pet["id"]) != pet_id]
 
-    save_pets(updated_pets)
+    Pet.save_pets(updated_pets)
 
     return redirect("/dashboard")
 
@@ -456,10 +437,10 @@ def submit_adoption():
         user_id=user_id,
         pet_id=pet_id,
         shelter_id=shelter_id,
-        email=email,  # Now always safe to use
+        email=email,  
     )
 
-    save_request_to_json(adoption_request)
+    adoption_request.save_to_json()
 
     return jsonify({"status": "success", "message": "Your adoption request has been submitted successfully."})
 
