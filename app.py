@@ -9,8 +9,7 @@ from werkzeug.utils import secure_filename
 from models.shelter import Shelter
 from models.entity import Entity
 from datetime import timedelta
-
-
+from utils.funs import write_to_file
 
 app = flask.Flask("")
 app.secret_key = "my-secret-123"
@@ -129,6 +128,7 @@ def signup():
             session["shelter_id"] = shelter.id
             session["username"] = shelter.name
             session["role"] = "shelter"
+            write_to_file(os.path.join("data", "shelters.txt"), shelter.name)
             return jsonify({"status": "success", "role": "shelter", "id": shelter.id, "name": shelter.name})
         else:
             user = User(username, email, password)
@@ -267,9 +267,7 @@ def dashboard():
                 <img src="{pet['image_url']}" alt="Pet image">
                 <p>Species: {pet['species']}</p>
                 <p>Age: {pet['age']}</p>
-                <p>About: {pet.get('about', '')}</p>
                 <p>Status: {'Adopted' if pet.get('adopted') else 'Available'}</p>
-
                 <div class="dashboard-actions">
                     <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
                     <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
@@ -330,7 +328,7 @@ def add_pet():
 
         return redirect("/dashboard")
 
-    return get_html("add_pet")
+    return get_html2("add_pet")
 
 @app.route("/edit_pet", methods=["GET", "POST"])
 def edit_pet():
@@ -342,7 +340,7 @@ def edit_pet():
         if not pet:
             return "Pet not found", 404
 
-        html = get_html("edit_pet")  # Reads the raw HTML template
+        html = get_html2("edit_pet")  # Reads the raw HTML template
 
         adopted_options = """
             <option value="false" {avail}>Available</option>

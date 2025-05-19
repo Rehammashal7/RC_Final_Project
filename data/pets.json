@@ -127,7 +127,7 @@
     "image_url": "/static/images/dogs/dog4.jpg",
     "adopted": false,
     "shelter_id": 3,
-    "about": "Calm and sweet, great for seniors."
+    "about": "Calm and sweet, great for seniors.rrr"
   },
   {
     "id": 15,
@@ -178,5 +178,15 @@
     "adopted": false,
     "shelter_id": 1,
     "about": "lalalal"
+  },
+  {
+    "id": 22,
+    "name": "Rere",
+    "species": "Cat",
+    "age": 4,
+    "image_url": "/static/images/background3.jpg",
+    "adopted": false,
+    "shelter_id": 3,
+    "about": "ddddddddddddddddd"
   }
 ]

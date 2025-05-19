@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Pet</title>
-    <link rel="stylesheet" href="/static/edit.css">
+    <link rel="stylesheet" href="/static/CSS/edit.css">
 </head>
 <body>
     <div class="form-container">
@@ -13,8 +13,9 @@
             <input type="hidden" name="id" value="__ID__">
             <input type="text" name="name" value="__NAME__" required>
             <input type="text" name="species" value="__SPECIES__" required>
-            <input type="number" name="age" value="__AGE__" required>
-            <textarea name="about">__ABOUT__</textarea>
+            <input type="number" name="age" value="__AGE__" min="0" max="8"  required>
+            <textarea id="about" name="about" rows="4" placeholder="Write something about the pet..." required>__ABOUT__</textarea>
+
             <select name="adopted">
                 __ADOPTED_OPTIONS__
             </select>
@@ -22,5 +23,6 @@
             <button type="submit">Save Changes</button>
         </form>
     </div>
+    <script src="../static/JS/add_pet.js"></script>
 </body>
 </html>
