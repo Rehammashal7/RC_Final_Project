@@ -10,5 +10,17 @@
     "name": "Pets",
     "email": "test@gmail.com",
     "password": "98876554321XYZ123"
+  },
+  {
+    "id": 3,
+    "name": "xx",
+    "email": "reredddd@gmail.com",
+    "password": "87654321XYZ123"
+  },
+  {
+    "id": 4,
+    "name": "PetsLovers",
+    "email": "testd@gmail.com",
+    "password": "LAHSAMMAHERXYZ123"
   }
 ]

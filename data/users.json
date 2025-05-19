@@ -10,5 +10,17 @@
     "username": "khaled",
     "email": "khaled@gmail.com",
     "password": "\u00dcPOIUZTREWQXYZ123"
+  },
+  {
+    "id": 3,
+    "username": "sama",
+    "email": "sama@gmail.com",
+    "password": "987654321XYZ123"
+  },
+  {
+    "id": 4,
+    "username": "123",
+    "email": "adil@gmail.com",
+    "password": "87654321XYZ123"
   }
 ]

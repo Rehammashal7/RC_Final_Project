@@ -33,6 +33,33 @@
     "shelter_id": 1,
     "timestamp": "2025-05-19T12:36:57.796137",
     "days_since": "0 days ago",
-    "status": "Pending"
+    "status": "Refused"
+  },
+  {
+    "user_id": "3",
+    "pet_id": "15",
+    "email": "sama@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T13:13:47.392944",
+    "days_since": "0 days ago",
+    "status": "Accepted"
+  },
+  {
+    "user_id": "4",
+    "pet_id": "4",
+    "email": "adil@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T13:21:54.469485",
+    "days_since": "0 days ago",
+    "status": "Refused"
+  },
+  {
+    "user_id": "4",
+    "pet_id": "17",
+    "email": "adil@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T13:22:12.003501",
+    "days_since": "0 days ago",
+    "status": "Accepted"
   }
 ]

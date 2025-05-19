@@ -135,7 +135,7 @@
     "species": "Dog",
     "age": 1,
     "image_url": "/static/images/dogs/dog5.jpg",
-    "adopted": false,
+    "adopted": true,
     "shelter_id": 1,
     "about": "Very smart, picks up training fast."
   },
@@ -155,7 +155,7 @@
     "species": "Dog",
     "age": 3,
     "image_url": "/static/images/dogs/dog7.jpg",
-    "adopted": false,
+    "adopted": true,
     "shelter_id": 1,
     "about": "Fun-loving and eager to please."
   },
@@ -168,35 +168,7 @@
     "adopted": false,
     "shelter_id": 1,
     "about": "Great with kids, very patient and kind."
-  },
-  {
-    "id": 21,
-    "name": "Lolo",
-    "species": "cat",
-    "age": 11,
-    "image_url": "/static/images/test.PNG",
-    "adopted": false,
-    "shelter_id": 1,
-    "about": "lalalal"
-  },
-  {
-    "id": 22,
-    "name": "Rere",
-    "species": "Cat",
-    "age": 4,
-    "image_url": "/static/images/background3.jpg",
-    "adopted": false,
-    "shelter_id": 3,
-    "about": "ddddddddddddddddd"
-  },
-  {
-    "id": 23,
-    "name": "Reree",
-    "species": "Cat",
-    "age": 2,
-    "image_url": "/static/images/7852470_3762304.jpg",
-    "adopted": false,
-    "shelter_id": 2,
-    "about": "cute"
   }
+ 
+  
 ]

@@ -32,7 +32,7 @@ well as the names of two properties and two methods.
  - Line number(s) for the class definition: Line 5 to Line 13
  - Name of two properties:pet_id, adopted
  - Name of two methods:load_pets(),save_pet(pets)
- - File name and line numbers where the methods are used:app.y  Line 288 and Line 34
+ - File name and line numbers where the methods are used:app.y  Line 298 and Line 288
 - [✔️] It makes use of JavaScript in the front end and uses the
 localStorage of the web browser.
 - [✔️] It uses modern JavaScript (for example, let and const
@@ -43,12 +43,12 @@ feature.
 the file name and the line number(s) of at least
  one example of a conditional statement in your code.
  - File name:app.py
- - Line number(s):75
+ - Line number(s):398
 - [✔️] It contains loops. Please provide below the file name
 and the line number(s) of at least
  one example of a loop in your code.
  - File name:app.py
- - Line number(s):96 to 98
+ - Line number(s):97 to 99
 - [✔️] It lets the user enter a value in a text box at some
 point.
  This value is received and processed by your back end
@@ -66,4 +66,5 @@ browser.
 - [✔️] All exercises have been completed as per the
 requirements and pushed to the respective GitHub repository
 
+![alt text](image.png)
 

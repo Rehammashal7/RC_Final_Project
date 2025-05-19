@@ -27,13 +27,13 @@ def get_html(page_name):
 
 
 
-
-
 @app.route("/")
 def homepage():
+    if "shelter_id"  in session :
+        return redirect("/dashboard") 
     pets = Pet.load_pets()
     html = get_html("index")
-
+     
     # Filter pets: show only those not adopted
     available_pets = [pet for pet in pets if not pet.get("adopted", False)]
 
@@ -206,7 +206,7 @@ def petDetails():
 @app.route("/dashboard")
 def dashboard():
     if "shelter_id" not in session :
-        return redirect("/login")  
+        return redirect("/")  
     shelter_id = session.get("shelter_id")
 
     #  Debug print
@@ -244,7 +244,7 @@ def dashboard():
 @app.route("/add-pet", methods=["GET", "POST"])
 def add_pet():
     if "shelter_id" not in session :
-        return redirect("/login")  
+        return redirect("/")  
     if flask.request.method == "POST":
         data = flask.request.form
 
@@ -294,7 +294,7 @@ def add_pet():
 @app.route("/edit_pet", methods=["GET", "POST"])
 def edit_pet():
     if "shelter_id" not in session :
-        return redirect("/login")  
+        return redirect("/")  
     pets = Pet.load_pets()
 
     if flask.request.method == "GET":
