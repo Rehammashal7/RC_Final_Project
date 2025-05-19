@@ -16,12 +16,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16px; /* Reduced gap for tighter layout */
+  gap: 16px; 
   margin-top: 20px;
 }
 
 .request-card {
-  width: 280px; /* Slightly narrower for better fit */
+  width: 280px; 
   padding: 16px;
   border: 1px solid #ccc;
   border-radius: 12px;
