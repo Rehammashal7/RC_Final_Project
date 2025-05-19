@@ -75,3 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
     welcome.style.display = "none";
   }
 });
+
+document.querySelectorAll('.card').forEach(card => {
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', () => {
+    const id = card.closest('.card-link') 
+                 ? card.closest('.card-link').getAttribute('href') 
+                 : card.dataset.id && `/pet?id=${card.dataset.id}`;
+    if (id) window.location = id;
+  });
+});

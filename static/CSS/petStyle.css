@@ -191,7 +191,7 @@ body {
 #alertCloseBtn {
   width: 100%;
   background-color: #b83eb8;
-  color: #b83eb8;
+  color: white;
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -207,19 +207,6 @@ body {
 }
 
 
-/* Alert button */
-.auth-btn {
-  background-color: #b83eb8; 
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
 
 
-.auth-btn:hover {
-  background-color: #b83eb8; 
-}
 

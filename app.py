@@ -52,35 +52,42 @@ def homepage():
     html = get_html2("index")
     user_id = session.get("user_id")
     print("Session shelter_id:", user_id)
+
     # Filter pets: show only those not adopted
     available_pets = [pet for pet in pets if not pet.get("adopted", False)]
 
-    # Pet cards
+    # Pet cards: clickable entire card (wrapped in <a>)
     pets_html = ""
     for pet in available_pets:
-        pets_html += f'''<div class="card" data-species="{pet['species']}">
-            <img src="{pet['image_url']}" alt="{pet['name']}">
-            <div class="card-content">
-                <h3>{pet['name']}</h3>
-                <p>{pet.get('about', 'No description available.')}</p>
+        pets_html += f'''
+        <a href="/pet?id={pet['id']}" class="card-link">
+            <div class="card" data-species="{pet['species']}">
+                <img src="{pet['image_url']}" alt="{pet['name']}">
+                <div class="card-content">
+                    <h3>{pet['name']}</h3>
+                    <p>{pet.get('about', 'No description available.')}</p>
+                </div>
+                <div class="status-badge">Available</div>
             </div>
-            <div class="status-badge">Available</div>
-            <a href="/pet?id={pet['id']}" class="action-btn"> → </a>
-        </div>'''
+        </a>
+        '''
 
+    # Replace placeholder with card container
     html = html.replace("<!-- PETS_PLACEHOLDER -->", f'<div class="cards-containers">{pets_html}</div>')
 
     # Navbar links
     if "user_id" in session:
-        navbar_links =''' 
+        navbar_links = '''
         <a href="/my-requests">My Requests</a>
         <a href="/logout">Logout</a>
         '''
     else:
         navbar_links = '<a href="/signup">Sign Up</a><a href="/login">Login</a>'
+    
     html = html.replace("<!-- NAVBAR_LINKS -->", navbar_links)
 
     return html
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -228,18 +235,7 @@ def petDetails():
     return html
 
 
-@app.route("/adopt")
-def adopt_form():
-    pet_id = flask.request.args.get("id")
-    pets = load_pets()
-    pet = next((p for p in pets if str(p["id"]) == pet_id), None)
 
-    if not pet:
-        return "Pet not found", 404
-
-    html = get_html2("adopt")
-    html = html.replace("<!-- PET_NAME -->", pet["name"])
-    return html
 
 
     
@@ -451,7 +447,7 @@ def submit_adoption():
         pet_id=pet_id,
         shelter_id=shelter_id,
         email=email,
-        message=message
+        
     )
 
     save_request_to_json(adoption_request)
@@ -484,7 +480,6 @@ def my_requests():
         <div class="request-card">
             <h3>{pet['name']} ({pet['species']})</h3>
             <img src="{pet.get('image_url', '')}" alt="Pet image" />
-            <p><strong>Message:</strong> {r['message']}</p>
             <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
             <p>Status: <span class="status {status}">{status}</span></p>
         </div>

@@ -3,11 +3,10 @@ import os
 
 from datetime import datetime
 class AdoptionRequest:
-    def __init__(self, user_id, pet_id, email, message, shelter_id):
+    def __init__(self, user_id, pet_id, email, shelter_id):
         self.user_id = user_id
         self.pet_id = pet_id
         self.email = email
-        self.message = message
         self.shelter_id = shelter_id
         self.timestamp = datetime.utcnow().isoformat()
         self.days_since = "0 days ago"
@@ -18,7 +17,6 @@ class AdoptionRequest:
             "user_id": self.user_id,
             "pet_id": self.pet_id,
             "email": self.email,
-            "message": self.message,
             "shelter_id": self.shelter_id,
             "timestamp": self.timestamp,
             "days_since": self.days_since,
