@@ -61,5 +61,14 @@
     "timestamp": "2025-05-19T13:22:12.003501",
     "days_since": "0 days ago",
     "status": "Accepted"
+  },
+  {
+    "user_id": "1",
+    "pet_id": "10",
+    "email": "rere@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T14:01:04.350446",
+    "days_since": "0 days ago",
+    "status": "Pending"
   }
 ]
