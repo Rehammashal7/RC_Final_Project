@@ -79,3 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+ document.getElementById("signupName").addEventListener("keypress", function (e) {
+    const char = String.fromCharCode(e.which);
+    if (!/^[a-zA-Z\s]*$/.test(char)) {
+      e.preventDefault();
+    }
+  });

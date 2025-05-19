@@ -20,7 +20,16 @@
   <!-- Full Name -->
   <div class="form-group">
     <label for="signupName">Full Name</label>
-    <input type="text" id="signupName" name="username" placeholder="Your name" required>
+     <input 
+    type="text" 
+    id="signupName" 
+    name="username" 
+    placeholder="Your name" 
+    required 
+    pattern="[A-Za-z\s]+" 
+    title="Only letters and spaces are allowed"
+    required
+  >
   </div>
 
   <!-- Email -->
