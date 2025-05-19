@@ -1,0 +1,16 @@
+
+body {
+  
+    background-color: white;
+
+    
+  }
+img{
+
+ width: 100%;
+  height: 500px;       
+  display: block;
+  object-fit: contain;
+  margin-top: 50px;
+}
+  

@@ -34,7 +34,7 @@ body, html {
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 20px; /* control spacing between welcome and links */
+  gap: 20px; 
 }
 
 .welcome-message {
@@ -100,12 +100,11 @@ body, html {
     color: #444;
 }
 
-/* Pet Cards Section */
-/* Container tweaks */
+
 .cards-containers {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;           /* tighter spacing */
+  gap: 16px;           
   justify-content: center;
   padding: 2rem;
   margin-top: 2rem;
@@ -116,18 +115,15 @@ body, html {
 
 /* Make the <a> wrapper fill the grid cell */
 .card-link {
-  display: inline-block;        /* shrink‑to‑fit width of inner .card */
-  text-decoration: none;
+  display: inline-block;        
   color: inherit;
 }
 
-/* Ensure nothing inside the card steals pointer events */
 .card, 
 .card * {
-  pointer-events: none;         /* disable events on children */
+  pointer-events: none;         
 }
 
-/* Re‑enable pointer events on the <a> itself */
 .card-link, 
 .card-link .card {
   pointer-events: auto;
@@ -135,7 +131,7 @@ body, html {
 
 /* Card tweaks */
 .cards-containers .card {
-  width: 280px;        /* slightly narrower */
+  width: 280px;        
   background: white;
   border-radius: 16px;
   overflow: hidden;
@@ -149,10 +145,10 @@ body, html {
   box-shadow: 0 12px 40px rgba(0,0,0,0.12);
 }
 
-/* Image height fixed */
+
 .cards-containers .card img {
   width: 100%;
-  height: 180px;       /* fixed height */
+  height: 180px;      
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
@@ -162,7 +158,7 @@ body, html {
   transform: scale(1.03);
 }
 
-/* Content & badge */
+
 .cards-containers .card .card-content {
   padding: 1rem;
 }
@@ -237,7 +233,7 @@ body, html {
   box-shadow: 0 0 15px rgb(204, 169, 194);
 }
 
-/* Responsive Adjustments for Hero & Overlay */
+
 @media (max-width: 768px) {
     .split-background-section {
         flex-direction: column;

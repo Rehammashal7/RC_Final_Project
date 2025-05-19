@@ -188,5 +188,15 @@
     "adopted": false,
     "shelter_id": 3,
     "about": "ddddddddddddddddd"
+  },
+  {
+    "id": 23,
+    "name": "Reree",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/7852470_3762304.jpg",
+    "adopted": false,
+    "shelter_id": 2,
+    "about": "cute"
   }
 ]

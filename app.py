@@ -1,5 +1,5 @@
 
-import flask,json,hashlib
+import flask,json
 from models.user import User
 from models.Requests import AdoptionRequest, save_request_to_json
 from flask import  jsonify, redirect, request,session
@@ -17,14 +17,8 @@ app.permanent_session_lifetime = timedelta(days=7)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
 
-def get_html2(page_name):
-    html_file = open( "templates/"+ page_name + ".html")
-    content = html_file.read()
-    html_file.close()
-    return content
-
 def get_html(page_name):
-    html_file = open( page_name + ".html")
+    html_file = open( "templates/"+ page_name + ".html")
     content = html_file.read()
     html_file.close()
     return content
@@ -49,7 +43,7 @@ def save_pets(pets):
 @app.route("/")
 def homepage():
     pets = load_pets()
-    html = get_html2("index")
+    html = get_html("index")
     user_id = session.get("user_id")
     print("Session shelter_id:", user_id)
 
@@ -146,22 +140,14 @@ def signup():
             session["role"] = "user"
             return jsonify({"status": "success", "role": "user", "id": user.id, "name": user.username})
 
-    return get_html2("signup")
-
-
-
-
-
-
-
-
+    return get_html("signup")
 
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if flask.request.method == "GET":
-        return get_html2("login")  # Show the login form
+        return get_html("login")  # Show the login form
 
     email = flask.request.form.get('email')
     password = flask.request.form.get('password')
@@ -196,19 +182,9 @@ def login():
     return flask.jsonify({"status": "fail", "message": "Invalid email or password"}), 401
 
 
-
-
-
-
-
-
-
-
 @app.route('/logout')
 def logout():
-    print("Logging out session:", dict(session))  # Add this
     session.clear()
-    print("Session after clear:", dict(session))  # Add this
     return redirect("/login")
 
 
@@ -225,7 +201,7 @@ def petDetails():
     if not pet:
         return "Pet not found", 404
 
-    html = get_html2("pet")
+    html = get_html("pet")
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     html = html.replace("<!-- PET_IMAGE -->", pet["image_url"])
     html = html.replace("<!-- PET_SPECIES -->", pet["species"])
@@ -242,8 +218,13 @@ def petDetails():
     
 @app.route("/dashboard")
 def dashboard():
+    if "shelter_id" not in session :
+        return redirect("/login")  
+
+    
+    
     shelter_id = session.get("shelter_id")
-    print("Session shelter_id:", shelter_id)
+    
     
     #  Debug print
 
@@ -251,7 +232,7 @@ def dashboard():
     pets = load_pets()
     my_pets = [pet for pet in pets if pet.get("shelter_id") == shelter_id]
 
-    html = get_html2("dashboard")
+    html = get_html("dashboard")
     pets_html = ""
 
     if not my_pets:
@@ -281,6 +262,8 @@ def dashboard():
 
 @app.route("/add-pet", methods=["GET", "POST"])
 def add_pet():
+    if "shelter_id" not in session :
+        return redirect("/login")  
     if flask.request.method == "POST":
         data = flask.request.form
 
@@ -325,10 +308,12 @@ def add_pet():
 
         return redirect("/dashboard")
 
-    return get_html2("add_pet")
+    return get_html("add_pet")
 
 @app.route("/edit_pet", methods=["GET", "POST"])
 def edit_pet():
+    if "shelter_id" not in session :
+        return redirect("/login")  
     pets = load_pets()
 
     if flask.request.method == "GET":
@@ -337,7 +322,7 @@ def edit_pet():
         if not pet:
             return "Pet not found", 404
 
-        html = get_html2("edit_pet")  # Reads the raw HTML template
+        html = get_html("edit_pet")  # Reads the raw HTML template
 
         adopted_options = """
             <option value="false" {avail}>Available</option>
@@ -382,6 +367,8 @@ def edit_pet():
 
 @app.route("/delete_pet")
 def delete_pet():
+    if "shelter_id" not in session :
+        return redirect("/login")  
     pet_id = flask.request.args.get("id")
 
     if not pet_id:
@@ -507,7 +494,7 @@ def my_requests():
         </div>
         """
 
-    html = get_html2("requests")  # Load the HTML template
+    html = get_html("requests")  # Load the HTML template
     html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
     return html
 
@@ -553,7 +540,7 @@ def shelter_requests():
         """
     cards_html += '</div>'
 
-    html = get_html2("shelterRequestes")
+    html = get_html("shelterRequestes")
     html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
     return html
 
@@ -598,6 +585,13 @@ def update_request_status():
 
     return redirect("/shelterRequestes")
 
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"]="no-store, no-cach, must-revalidate"
+    return response
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return get_html("error"),404
 
 

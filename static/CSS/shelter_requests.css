@@ -3,6 +3,10 @@ body {
   background-color: #eef1f5;
   margin: 0;
   padding: 20px;
+    background-image: url("../images/background3.jpg");
+    background-size: cover;
+    background-repeat: repeat; 
+    background-position: center;
 }
 
 .page-title {
