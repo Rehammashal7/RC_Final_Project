@@ -1,0 +1,29 @@
+[
+  {
+    "user_id": "1",
+    "pet_id": "7",
+    "email": "rere@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T09:37:34.018787",
+    "days_since": "0 days ago",
+    "status": "Accepted"
+  },
+  {
+    "user_id": "1",
+    "pet_id": "16",
+    "email": "rere@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T09:41:16.212574",
+    "days_since": "0 days ago",
+    "status": "Refused"
+  },
+  {
+    "user_id": "1",
+    "pet_id": "8",
+    "email": "rere@gmail.com",
+    "shelter_id": 1,
+    "timestamp": "2025-05-19T09:52:03.575832",
+    "days_since": "0 days ago",
+    "status": "Accepted"
+  }
+]

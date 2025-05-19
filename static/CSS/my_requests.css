@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+  background-image: url("../images/background3.jpg");
+    background-size: cover;
+    background-repeat: repeat; 
+    background-position: center;
+   
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 2rem;
+}
+
+.requests-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.request-card {
+  background: #ffffff;
+  padding: 16px;
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.request-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.request-card h3 {
+  margin: 0 0 10px;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.request-card img {
+  max-width: 120px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.request-card p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+.status.Pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status.Accepted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.Refused {
+  background: #f8d7da;
+  color: #721c24;
+}

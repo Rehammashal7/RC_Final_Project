@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "name": "Luna",
+    "species": "Cat",
+    "age": 1,
+    "image_url": "/static/images/cats/cat1.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Playful and affectionate, perfect for families."
+  },
+  {
+    "id": 2,
+    "name": "Milo",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/cats/cat2.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Loves sunny windows and cozy naps."
+  },
+  {
+    "id": 3,
+    "name": "Chloe",
+    "species": "Cat",
+    "age": 3,
+    "image_url": "/static/images/cats/cat3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Sweet and gentle, great with kids."
+  },
+  {
+    "id": 4,
+    "name": "Oliver",
+    "species": "Cat",
+    "age": 4,
+    "image_url": "/static/images/cats/cat4.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Quiet and independent, ideal for calm homes."
+  },
+  {
+    "id": 5,
+    "name": "Daisy",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/cats/cat5.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Curious explorer with a loving heart."
+  },
+  {
+    "id": 6,
+    "name": "Simba",
+    "species": "Cat",
+    "age": 1,
+    "image_url": "/static/images/cats/cat6.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Very playful, loves string toys and treats."
+  },
+  {
+    "id": 7,
+    "name": "Nala",
+    "species": "Cat",
+    "age": 5,
+    "image_url": "/static/images/cats/cat7.jpg",
+    "adopted": true,
+    "shelter_id": 1,
+    "about": "Senior cat, calm and loving companion."
+  },
+  {
+    "id": 8,
+    "name": "Leo",
+    "species": "Cat",
+    "age": 2,
+    "image_url": "/static/images/cats/cat8.jpg",
+    "adopted": true,
+    "shelter_id": 1,
+    "about": "Friendly and sociable, loves cuddles."
+  },
+  {
+    "id": 9,
+    "name": "Cleo",
+    "species": "Cat",
+    "age": 3,
+    "image_url": "/static/images/cats/cat9.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Great with other pets, curious and smart."
+  },
+  {
+    "id": 10,
+    "name": "Max",
+    "species": "Cat",
+    "age": 6,
+    "image_url": "/static/images/cats/cat10.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Laid-back and affectionate lap cat."
+  },
+  {
+    "id": 12,
+    "name": "Bella",
+    "species": "Dog",
+    "age": 3,
+    "image_url": "/static/images/dogs/dog2.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Loyal companion with a big heart."
+  },
+  {
+    "id": 13,
+    "name": "Rocky",
+    "species": "Dog",
+    "age": 2,
+    "image_url": "/static/images/dogs/dog3.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Loves to play fetch and learn new tricks."
+  },
+  {
+    "id": 14,
+    "name": "Lucy",
+    "species": "Dog",
+    "age": 5,
+    "image_url": "/static/images/dogs/dog4.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Calm and sweet, great for seniors.rrr"
+  },
+  {
+    "id": 15,
+    "name": "Charlie",
+    "species": "Dog",
+    "age": 1,
+    "image_url": "/static/images/dogs/dog5.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Very smart, picks up training fast."
+  },
+  {
+    "id": 16,
+    "name": "Molly",
+    "species": "Dog",
+    "age": 4,
+    "image_url": "/static/images/dogs/dog6.webp",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Gentle giant who loves attention."
+  },
+  {
+    "id": 17,
+    "name": "Duke",
+    "species": "Dog",
+    "age": 3,
+    "image_url": "/static/images/dogs/dog7.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Fun-loving and eager to please."
+  },
+  {
+    "id": 19,
+    "name": "Toby",
+    "species": "Dog",
+    "age": 6,
+    "image_url": "/static/images/dogs/dog9.jpg",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "Great with kids, very patient and kind."
+  },
+  {
+    "id": 21,
+    "name": "Lolo",
+    "species": "cat",
+    "age": 11,
+    "image_url": "/static/images/test.PNG",
+    "adopted": false,
+    "shelter_id": 1,
+    "about": "lalalal"
+  },
+  {
+    "id": 22,
+    "name": "Rere",
+    "species": "Cat",
+    "age": 4,
+    "image_url": "/static/images/background3.jpg",
+    "adopted": false,
+    "shelter_id": 3,
+    "about": "ddddddddddddddddd"
+  }
+]

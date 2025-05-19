@@ -1,144 +1,47 @@
 
 import flask,json,hashlib
-
-from Requests import AdoptionRequest, save_request_to_json
-from pathlib import Path
-from flask import  redirect, request,session
-from pet import Pet
+from models.user import User
+from models.Requests import AdoptionRequest, save_request_to_json
+from flask import  jsonify, redirect, request,session
+from models.pet import Pet
 import os
-import uuid
-import flask
 from werkzeug.utils import secure_filename
+from models.shelter import Shelter
+from models.entity import Entity
+from datetime import timedelta
+from utils.funs import write_to_file
+
 app = flask.Flask("")
-app.secret_key = os.urandom(24)
+app.secret_key = "my-secret-123"
+app.permanent_session_lifetime = timedelta(days=7)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 
+
+def get_html2(page_name):
+    html_file = open( "templates/"+ page_name + ".html")
+    content = html_file.read()
+    html_file.close()
+    return content
+
 def get_html(page_name):
-    html_file = open(page_name + ".html")
-    content=html_file.read()
+    html_file = open( page_name + ".html")
+    content = html_file.read()
     html_file.close()
     return content
 
 
 def load_pets():
-    petsdb=open("pets.json")
+    petsdb=open("data/pets.json")
     pets=petsdb.read()
     petsdb.close()
     pets=json.loads(pets)
     return pets
 
-def get_next_user_id(users):
-    if not users:
-        return 1
-    return max(user["id"] for user in users) + 1
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def NewUser(email, password):
-    hashed = hash_password(password)
-    
-    file_path = Path("users.json")
-    
-    # If file doesn't exist, create an empty one
-    if not file_path.exists():
-        with open(file_path, "w") as f:
-            json.dump([], f)
-
-    # Load existing users
-    with open(file_path, "r") as f:
-        try:
-            users = json.load(f)
-        except json.JSONDecodeError:
-            users = []
-
-    # Check for duplicate emails
-    for user in users:
-        if user["email"] == email:
-            return {"success": False, "message": "Email already exists"}
-
-    # Generate next user ID
-    next_id = max((user.get("id", 0) for user in users), default=0) + 1
-
-    # Add new user with ID
-    user_data = {
-        "id": next_id,
-        "email": email,
-        "password": hashed
-    }
-
-    users.append(user_data)
-
-    # Save updated user list
-    with open(file_path, "w") as f:
-        json.dump(users, f, indent=2)
-
-    return {"success": True, "message": "User registered successfully"}
 
 
 def save_pets(pets):
-    with open("pets.json", "w") as f:
+    with open("data/pets.json", "w") as f:
         json.dump(pets, f, indent=2)
-
-
-
-
-
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    if flask.request.method == "POST":
-        print("Form submitted!")  # Basic check
-        print("Form data:", flask.request.form)  # Show all form data
-        data = flask.request.form
-        data = flask.request.form
-        email = data.get("email")  # Changed from "name" to "username"
-        password = data.get("password")
-      #  confirm_password = data.get("confirm_password")
-
-        # Debug print statement - add this line
-        print(f"Received signup request: {email}, {password}")
-
-        # Validate inputs
-        if not email or not password:
-            return "Please enter both username and password", 400
-            
-        
-        result = NewUser(email, password)
-        if result["success"]:
-            return redirect('/')
-        else:
-            return result["message"], 400
-    else:
-        return get_html("signup")
-
-
-
-
-@app.route('/login', methods=["GET", "POST"])
-def login():
-    if flask.request.method == "GET":
-        return get_html("login")  # Show the login form
-
-    email = flask.request.form.get('email')
-    password = flask.request.form.get('password')
-    print(f"Received signup request: {email}, {password}")
-    with open('users.json', 'r') as f:
-        users = json.load(f)
-
-    # Find user by email (case-insensitive)
-    user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
-
-    if not user:
-        return get_html("login")
-
-    if hash_password(password) == user['password']:
-        print(f"Login success for: {email}")
-        #   # or use redirect(url_for("homepage"))
-        session["user_id"] = user["id"] 
-        return redirect('/')
-    else:
-        print(f"Login success for: {email}")
-        return get_html("login")
 
 
 
@@ -146,38 +49,168 @@ def login():
 @app.route("/")
 def homepage():
     pets = load_pets()
-    html = get_html("index")
+    html = get_html2("index")
+    user_id = session.get("user_id")
+    print("Session shelter_id:", user_id)
 
-    # Pet cards
+    # Filter pets: show only those not adopted
+    available_pets = [pet for pet in pets if not pet.get("adopted", False)]
+
+    # Pet cards: clickable entire card (wrapped in <a>)
     pets_html = ""
-    for pet in pets:
-        pets_html += f"""
-        <div class="card">
-            <img src="{pet['image_url']}" alt="{pet['name']}">
-            <div class="card-content">
-                <h3>{pet['name']}</h3>
-                <p>{pet.get('description', 'No description available.')}</p>
+    for pet in available_pets:
+        pets_html += f'''
+        <a href="/pet?id={pet['id']}" class="card-link">
+            <div class="card" data-species="{pet['species']}">
+                <img src="{pet['image_url']}" alt="{pet['name']}">
+                <div class="card-content">
+                    <h3>{pet['name']}</h3>
+                    <p>{pet.get('about', 'No description available.')}</p>
+                </div>
+                <div class="status-badge">Available</div>
             </div>
-            <div class="status-badge">Available</div>
-            <a href="/pet?id={pet['id']}" class="action-btn"> → </a>
-        </div>
-        """
+        </a>
+        '''
+
+    # Replace placeholder with card container
     html = html.replace("<!-- PETS_PLACEHOLDER -->", f'<div class="cards-containers">{pets_html}</div>')
 
     # Navbar links
     if "user_id" in session:
-        navbar_links = '<a href="/logout">Logout</a>'
+        navbar_links = '''
+        <a href="/my-requests">My Requests</a>
+        <a href="/logout">Logout</a>
+        '''
     else:
         navbar_links = '<a href="/signup">Sign Up</a><a href="/login">Login</a>'
+    
     html = html.replace("<!-- NAVBAR_LINKS -->", navbar_links)
 
     return html
 
 
-@app.route("/logout")
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        data = request.form
+
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+        role = data.get("role")
+
+        if not email or not password or not username:
+            return redirect("/signup?error=incomplete")
+
+        if len(password) < 8:
+            return redirect("/signup?error=short_password")
+
+        email_exists = False
+        user_id = None
+
+        user_file = os.path.join("data", "users.json")
+        if os.path.exists(user_file):
+            with open(user_file, "r") as f:
+                users = json.load(f)
+                for user in users:
+                    if user.get("email") == email:
+                        email_exists = True
+
+        shelter_file = os.path.join("data", "shelters.json")
+        if os.path.exists(shelter_file):
+            with open(shelter_file, "r") as f:
+                shelters = json.load(f)
+                for shelter in shelters:
+                    if shelter.get("email") == email:
+                        email_exists = True
+
+        if email_exists:
+            return redirect(f"/signup?error=email_exists&email={email}")
+
+        # Save new user/shelter and set session
+        if role == "shelter":
+            shelter = Shelter(username, email, password)
+            shelter.save()
+            session.permanent = True
+            session["shelter_id"] = shelter.id
+            session["username"] = shelter.name
+            session["role"] = "shelter"
+            write_to_file(os.path.join("data", "shelters.txt"), shelter.name)
+            return jsonify({"status": "success", "role": "shelter", "id": shelter.id, "name": shelter.name})
+        else:
+            user = User(username, email, password)
+            user.save()
+            session.permanent = True
+            session["user_id"] = user.id
+            session["username"] = user.username
+            session["role"] = "user"
+            return jsonify({"status": "success", "role": "user", "id": user.id, "name": user.username})
+
+    return get_html2("signup")
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if flask.request.method == "GET":
+        return get_html2("login")  # Show the login form
+
+    email = flask.request.form.get('email')
+    password = flask.request.form.get('password')
+    print(f"Received login request: {email}, {password}")
+
+    if not email or not password:
+        return flask.jsonify({"status": "fail", "message": "Missing email or password"}), 400
+
+    with open('data/users.json', 'r') as f:
+        users = json.load(f)
+
+    with open('data/shelters.json', 'r') as f:
+        shelters = json.load(f)
+
+    user = next((u for u in users if u.get('email', '').lower() == email.lower()), None)
+    if user and Entity.verify_password(password, user['password']):
+        session.permanent = True
+        session["user_id"] = user["id"]
+        session["username"] = user["username"]
+        session["role"] = "user"
+        session["email"] = user["email"]
+        return flask.jsonify({"status": "success", "role": "user", "id": user["id"], "name": user["username"]})
+
+    shelter = next((s for s in shelters if s.get('email', '').lower() == email.lower()), None)
+    if shelter and Entity.verify_password(password, shelter['password']):
+        session.permanent = True
+        session["shelter_id"] = shelter["id"]
+        session["username"] = shelter["name"]
+        session["role"] = "shelter"
+        return flask.jsonify({"status": "success", "role": "shelter", "id": shelter["id"], "name": shelter["name"]})
+
+    return flask.jsonify({"status": "fail", "message": "Invalid email or password"}), 401
+
+
+
+
+
+
+
+
+
+
+@app.route('/logout')
 def logout():
-    session.pop("user_id", None)
-    return redirect("/")
+    print("Logging out session:", dict(session))  # Add this
+    session.clear()
+    print("Session after clear:", dict(session))  # Add this
+    return redirect("/login")
+
 
 
 @app.route("/pet")
@@ -192,7 +225,7 @@ def petDetails():
     if not pet:
         return "Pet not found", 404
 
-    html = get_html("pet")
+    html = get_html2("pet")
     html = html.replace("<!-- PET_NAME -->", pet["name"])
     html = html.replace("<!-- PET_IMAGE -->", pet["image_url"])
     html = html.replace("<!-- PET_SPECIES -->", pet["species"])
@@ -203,92 +236,45 @@ def petDetails():
     return html
 
 
-@app.route("/adopt")
-def adopt_form():
-    pet_id = flask.request.args.get("id")
-    pets = load_pets()
-    pet = next((p for p in pets if str(p["id"]) == pet_id), None)
 
-    if not pet:
-        return "Pet not found", 404
 
-    html = get_html("adopt")
-    html = html.replace("<!-- PET_NAME -->", pet["name"])
-    return html
 
-@app.route("/shelter-signup", methods=["GET", "POST"])
-def shelter_signup():
-    if flask.request.method == "POST":
-        data = flask.request.form
-        email = data.get("email")
-        password = data.get("password")
-
-        if not email or not password:
-            return "Please enter both email and password", 400
-
-        
-
-        file_path = Path("shelters.json")
-        if not file_path.exists():
-            file_path.write_text("[]")
-
-        with open(file_path, "r") as f:
-            try:
-                shelters = json.load(f)
-            except json.JSONDecodeError:
-                shelters = []
-
-        # Check if email already exists
-        for s in shelters:
-            if s["email"] == email:
-                return "Shelter already registered", 400
-
-        # Assign unique ID
-        next_id = max((s.get("id", 0) for s in shelters), default=0) + 1
-
-        new_shelter = {
-            "id": next_id,
-            "email": email,
-            "password": password
-        }
-
-        shelters.append(new_shelter)
-        with open(file_path, "w") as f:
-            json.dump(shelters, f, indent=2)
-
-        # Store shelter session
-        flask.session["shelter_id"] = next_id
-        return redirect("shelter-dashboard")
-
-    return get_html("shelter-signup")
+    
 @app.route("/dashboard")
 def dashboard():
-    shelter_id = 1  # later: get from session
+    shelter_id = session.get("shelter_id")
+    print("Session shelter_id:", shelter_id)
+    
+    #  Debug print
+
+
     pets = load_pets()
     my_pets = [pet for pet in pets if pet.get("shelter_id") == shelter_id]
 
-    html = get_html("dashboard")
+    html = get_html2("dashboard")
     pets_html = ""
 
-    for pet in my_pets:
-        pets_html += f"""
-        <div class="dashboard-card" id="pet-{pet['id']}">
-            <h3>{pet['name']}</h3>
-            <img src="{pet['image_url']}" alt="Pet image">
-            <p>Species: {pet['species']}</p>
-            <p>Age: {pet['age']}</p>
-            <p>About: {pet.get('about', '')}</p>
-            <p>Status: {'Adopted' if pet['adopted'] else 'Available'}</p>
-
-            <div class="dashboard-actions">
-                <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
-                <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
+    if not my_pets:
+        pets_html = "<p style='text-align:center; margin-top:20px;'>No pets found for your shelter. Add one using the button above!</p>"
+    else:
+        for pet in my_pets:
+            pets_html += f"""
+            <div class="dashboard-card" id="pet-{pet['id']}">
+                <h3>{pet['name']}</h3>
+                <img src="{pet['image_url']}" alt="Pet image">
+                <p>Species: {pet['species']}</p>
+                <p>Age: {pet['age']}</p>
+                <p>Status: {'Adopted' if pet.get('adopted') else 'Available'}</p>
+                <div class="dashboard-actions">
+                    <a href="/edit_pet?id={pet['id']}" class="btn edit-btn">✏️ Edit</a>
+                    <a href="/delete_pet?id={pet['id']}" class="btn delete-btn">🗑️ Delete</a>
+                </div>
             </div>
-        </div>
-        """
+            """
 
     html = html.replace("<!-- PETS_PLACEHOLDER -->", pets_html)
     return html
+
 
 
 
@@ -315,7 +301,7 @@ def add_pet():
         age = int(age_raw)
 
         #  Get shelter ID from session
-        shelter_id = 1
+        shelter_id = session.get("shelter_id")
         if not shelter_id:
             return "You must be logged in as a shelter to add a pet", 403
 
@@ -339,7 +325,7 @@ def add_pet():
 
         return redirect("/dashboard")
 
-    return get_html("add_pet")
+    return get_html2("add_pet")
 
 @app.route("/edit_pet", methods=["GET", "POST"])
 def edit_pet():
@@ -351,7 +337,7 @@ def edit_pet():
         if not pet:
             return "Pet not found", 404
 
-        html = get_html("edit_pet")  # Reads the raw HTML template
+        html = get_html2("edit_pet")  # Reads the raw HTML template
 
         adopted_options = """
             <option value="false" {avail}>Available</option>
@@ -407,33 +393,211 @@ def delete_pet():
     save_pets(updated_pets)
 
     return redirect("/dashboard")
+
+
 @app.route("/get-session-user")
 def get_session_user():
     if "user_id" in session:
-        return {"user_id": session["user_id"]}
-    return {"user_id": None}
+        return jsonify({
+            "user_id": session["user_id"],
+            "email": session.get("email"),
+            "role": session.get("role"),
+            "name": session.get("name")
+        })
+    elif "shelter_id" in session:
+        return jsonify({
+            "shelter_id": session["shelter_id"],
+            "email": session.get("email"),
+            "role": session.get("role"),
+            "name": session.get("name")
+        })
+    else:
+        return jsonify({})
+
+
+
+
 @app.route("/submit-adoption", methods=["POST"])
 def submit_adoption():
-    full_name = request.form.get("full_name")
-    email = request.form.get("email")
-    message = request.form.get("reason")
-    pet_id = request.args.get("pet_id") or request.form.get("pet_id")
-    shelter_id = request.args.get("shelter_id") or request.form.get("shelter_id")
-
-    # Example: user_id comes from localStorage (passed in form hidden input)
     user_id = request.form.get("user_id")
+    pet_id = request.form.get("pet_id")
+    email = None  
 
-    # Create and save the request
+    if not user_id:
+        return jsonify({"status": "error", "message": "You must be logged in to submit an adoption request."}), 401
+
+    # Load existing requests
+    try:
+        with open("data/requests.json", "r") as f:
+            existing_requests = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing_requests = []
+
+    #  Get user email from users.json
+    try:
+        with open("data/users.json", "r") as f:
+            users = json.load(f)
+            
+        user = next((u for u in users if str(u["id"]) == user_id), None)
+        if user:
+            email = user.get("email")
+           
+    except Exception as e:
+        print("Error loading user data:", e)
+
+    # Prevent duplicate requests
+    for req in existing_requests:
+        if str(req.get("user_id")) == str(user_id) and str(req.get("pet_id")) == str(pet_id):
+            return jsonify({
+                "status": "error",
+                "message": "You have already submitted a request for this pet."
+            }), 400
+
+    # Load pets to find shelter_id
+    try:
+        with open("data/pets.json", "r") as f:
+            pets = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        return jsonify({"status": "error", "message": f"Error loading pet data: {str(e)}"}), 500
+
+    shelter_id = next((pet["shelter_id"] for pet in pets if str(pet.get("id")) == str(pet_id)), None)
+    if not shelter_id:
+        return jsonify({"status": "error", "message": "Could not find shelter for the given pet."}), 400
+
+    # Create and save request
     adoption_request = AdoptionRequest(
         user_id=user_id,
         pet_id=pet_id,
         shelter_id=shelter_id,
-        email=email,
-        message=message
+        email=email,  # Now always safe to use
     )
 
     save_request_to_json(adoption_request)
 
-    return "Adoption request submitted!"
+    return jsonify({"status": "success", "message": "Your adoption request has been submitted successfully."})
+
+
+
+
+@app.route("/my-requests")
+def my_requests():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect("/login")
+
+    with open("data/requests.json") as f:
+        requests_data = json.load(f)
+
+    with open("data/pets.json") as f:
+        pets_data = json.load(f)
+        pets_dict = {str(pet["id"]): pet for pet in pets_data}
+
+    my_requests = [r for r in requests_data if str(r["user_id"]) == str(user_id)]
+
+    cards_html = ""
+    for r in my_requests:
+        pet = pets_dict.get(str(r["pet_id"]), {"name": "Unknown", "species": "", "image_url": ""})
+        status = r.get("status", "Pending")
+        cards_html += f"""
+        <div class="request-card">
+            <h3>{pet['name']} ({pet['species']})</h3>
+            <img src="{pet.get('image_url', '')}" alt="Pet image" />
+            <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
+            <p>Status: <span class="status {status}">{status}</span></p>
+        </div>
+        """
+
+    html = get_html2("requests")  # Load the HTML template
+    html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
+    return html
+
+@app.route("/shelterRequestes")
+def shelter_requests():
+    shelter_id = session.get("shelter_id")
+    if not shelter_id:
+        return redirect("/login")
+
+    with open("data/requests.json") as f:
+        requests_data = json.load(f)
+
+    with open("data/pets.json") as f:
+        pets_data = json.load(f)
+        pets_dict = {str(pet["id"]): pet for pet in pets_data}
+
+    my_requests = []
+    for r in requests_data:
+        if str(r.get("shelter_id")) == str(shelter_id):
+            status = r.get('status', 'Pending')
+            if status == 'Pending':
+                r['status'] = 'Pending'  # Ensure status field exists
+                my_requests.append(r)
+
+    cards_html = '<div class="cards-container">'
+    for r in my_requests:
+        pet = pets_dict.get(str(r["pet_id"]), {"name": "Unknown", "species": "", "image_url": ""})
+        cards_html += f"""
+        <div class="request-card">
+            <h3>{pet['name']} ({pet['species']})</h3>
+            <img src="{pet.get('image_url', '')}" alt="Pet image" />
+            <div class="request-info">
+                <p><strong>From:</strong> {r['email']}</p>
+                <p><strong>Date:</strong> {r['timestamp'].split('T')[0]}</p>
+                <p><strong>Status:</strong> <span class="status {r['status']}">{r['status']}</span></p>
+                <form action="/update-request-status" method="POST" class="action-form">
+                    <input type="hidden" name="timestamp" value="{r['timestamp']}" />
+                    <button name="status" value="Accepted" class="accept-btn">Accept</button>
+                    <button name="status" value="Refused" class="refuse-btn">Refuse</button>
+                </form>
+            </div>
+        </div>
+        """
+    cards_html += '</div>'
+
+    html = get_html2("shelterRequestes")
+    html = html.replace("<!-- REQUEST_CARDS_PLACEHOLDER -->", cards_html)
+    return html
+
+
+
+
+@app.route("/update-request-status", methods=["POST"])
+def update_request_status():
+    timestamp = request.form.get("timestamp")
+    new_status = request.form.get("status")
+
+    # Load requests
+    with open("data/requests.json", "r") as f:
+        requests_data = json.load(f)
+
+    # Load pets
+    with open("data/pets.json", "r") as f:
+        pets_data = json.load(f)
+
+    # Update request status
+    for r in requests_data:
+        if r["timestamp"] == timestamp:
+            r["status"] = new_status
+
+            if new_status == "Accepted":
+                pet_id = r["pet_id"]
+
+                # Find the pet and mark as adopted
+                for pet in pets_data:
+                    if str(pet["id"]) == str(pet_id):
+                        pet["adopted"] = True
+                        break
+            break
+
+    # Save updated requests
+    with open("data/requests.json", "w") as f:
+        json.dump(requests_data, f, indent=2)
+
+    # Save updated pets
+    with open("data/pets.json", "w") as f:
+        json.dump(pets_data, f, indent=2)
+
+    return redirect("/shelterRequestes")
+
+
 
 

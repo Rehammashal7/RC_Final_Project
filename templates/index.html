@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pet Adoption</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/CSS/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+<div class="navbar">
+  <div class="navbar-logo">
+    <a href="/"><img src="../static/images/logo.jpg" alt="Logo"></a>
+  </div>
+
+  <div class="navbar-right">
+    <div class="welcome-message" id="welcomeMessage" style="display: none;"></div>
+    <div class="navbar-links" id="navbarLinks"></div>
+  </div>
+</div>
+
+
+
+ 
+
+  <!-- Category Cards -->
+  <section class="split-container">
+    <div class="split-background-section">
+      <div class="full-bg"></div>
+      <div class="animal-cards">
+        <div class="animal-card cat-card" onclick="filterPets('Cat')">
+          <h3>Cats</h3>
+          <p>See our adorable cats!</p>
+        </div>
+        <div class="animal-card dog-card" onclick="filterPets('Dog')">
+          <h3>Dogs</h3>
+          <p>Find your loyal companion!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br>
+
+  <!-- Pets Section -->
+  <h1 class="section-title after-cards">Available Pets</h1>
+  <!-- PETS_PLACEHOLDER -->
+
+  <!-- JS Scripts -->
+  <script src="/static/js/user.js"></script>
+</body>
+</html>
