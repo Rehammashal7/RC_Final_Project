@@ -182,6 +182,7 @@ def login():
         session["user_id"] = user["id"]
         session["username"] = user["username"]
         session["role"] = "user"
+        session["email"] = user["email"]
         return flask.jsonify({"status": "success", "role": "user", "id": user["id"], "name": user["username"]})
 
     shelter = next((s for s in shelters if s.get('email', '').lower() == email.lower()), None)
@@ -397,30 +398,52 @@ def delete_pet():
 @app.route("/get-session-user")
 def get_session_user():
     if "user_id" in session:
-        return jsonify({"user_id": session["user_id"]})
+        return jsonify({
+            "user_id": session["user_id"],
+            "email": session.get("email"),
+            "role": session.get("role"),
+            "name": session.get("name")
+        })
     elif "shelter_id" in session:
-        return jsonify({"shelter_id": session["shelter_id"]})
+        return jsonify({
+            "shelter_id": session["shelter_id"],
+            "email": session.get("email"),
+            "role": session.get("role"),
+            "name": session.get("name")
+        })
     else:
         return jsonify({})
 
-from flask import jsonify
+
+
 
 @app.route("/submit-adoption", methods=["POST"])
 def submit_adoption():
     user_id = request.form.get("user_id")
     pet_id = request.form.get("pet_id")
-    email = request.form.get("email")
-    message = request.form.get("reason")
+    email = None  
 
     if not user_id:
         return jsonify({"status": "error", "message": "You must be logged in to submit an adoption request."}), 401
-    print("Session shelter_id:", user_id)
+
     # Load existing requests
     try:
         with open("data/requests.json", "r") as f:
             existing_requests = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         existing_requests = []
+
+    #  Get user email from users.json
+    try:
+        with open("data/users.json", "r") as f:
+            users = json.load(f)
+            
+        user = next((u for u in users if str(u["id"]) == user_id), None)
+        if user:
+            email = user.get("email")
+           
+    except Exception as e:
+        print("Error loading user data:", e)
 
     # Prevent duplicate requests
     for req in existing_requests:
@@ -446,13 +469,12 @@ def submit_adoption():
         user_id=user_id,
         pet_id=pet_id,
         shelter_id=shelter_id,
-        email=email,
-        
+        email=email,  # Now always safe to use
     )
 
     save_request_to_json(adoption_request)
-    return jsonify({"status": "success", "message": "Your adoption request has been submitted successfully."})
 
+    return jsonify({"status": "success", "message": "Your adoption request has been submitted successfully."})
 
 
 

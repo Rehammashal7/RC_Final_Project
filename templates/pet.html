@@ -52,7 +52,7 @@
       const sessionRes = await fetch("/get-session-user");
       const sessionData = await sessionRes.json();
       const userId = sessionData.user_id;
-
+      const email=sessionData.email;
       if (!userId) {
         showCustomAlert("You must be logged in to adopt a pet.", "/login");
         return;
@@ -61,8 +61,8 @@
       const formData = new FormData();
       formData.append("user_id", userId);
       formData.append("pet_id", petId);
-      formData.append("email", ""); // optional
-      formData.append("reason", ""); // optional
+      formData.append("email", email); // optional
+      
 
       try {
         const response = await fetch("/submit-adoption", {

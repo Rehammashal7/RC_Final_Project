@@ -23,18 +23,15 @@ class AdoptionRequest:
             "status": self.status
         }
 
-def save_request_to_json(request_obj, filename=None):
-    if filename is None:
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        filename = os.path.join(base_dir, "data", "requests.json")
+def save_request_to_json(adoption_request):
+    try:
+        with open("data/requests.json", "r") as f:
+            existing = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        existing = []
 
-    if not os.path.exists(filename):
-        with open(filename, "w") as f:
-            json.dump([], f)
+    existing.append(adoption_request.to_dict())
 
-    with open(filename, "r+") as f:
-        data = json.load(f)
-        data.append(request_obj.to_dict())
-        f.seek(0)
-        json.dump(data, f, indent=4)
+    with open("data/requests.json", "w") as f:
+        json.dump(existing, f, indent=2)
 

@@ -35,7 +35,7 @@
     "species": "Cat",
     "age": 4,
     "image_url": "/static/images/cats/cat4.jpg",
-    "adopted": true,
+    "adopted": false,
     "shelter_id": 1,
     "about": "Quiet and independent, ideal for calm homes."
   },
@@ -65,8 +65,8 @@
     "species": "Cat",
     "age": 5,
     "image_url": "/static/images/cats/cat7.jpg",
-    "adopted": false,
-    "shelter_id": 3,
+    "adopted": true,
+    "shelter_id": 1,
     "about": "Senior cat, calm and loving companion."
   },
   {
@@ -75,7 +75,7 @@
     "species": "Cat",
     "age": 2,
     "image_url": "/static/images/cats/cat8.jpg",
-    "adopted": false,
+    "adopted": true,
     "shelter_id": 1,
     "about": "Friendly and sociable, loves cuddles."
   },
@@ -96,7 +96,7 @@
     "age": 6,
     "image_url": "/static/images/cats/cat10.jpg",
     "adopted": false,
-    "shelter_id": 3,
+    "shelter_id": 1,
     "about": "Laid-back and affectionate lap cat."
   },
   {
@@ -106,7 +106,7 @@
     "age": 3,
     "image_url": "/static/images/dogs/dog2.webp",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 1,
     "about": "Loyal companion with a big heart."
   },
   {
@@ -116,7 +116,7 @@
     "age": 2,
     "image_url": "/static/images/dogs/dog3.webp",
     "adopted": false,
-    "shelter_id": 3,
+    "shelter_id": 1,
     "about": "Loves to play fetch and learn new tricks."
   },
   {
@@ -125,8 +125,8 @@
     "species": "Dog",
     "age": 5,
     "image_url": "/static/images/dogs/dog4.jpg",
-    "adopted": true,
-    "shelter_id": 3,
+    "adopted": false,
+    "shelter_id": 1,
     "about": "Calm and sweet, great for seniors.rrr"
   },
   {
@@ -136,7 +136,7 @@
     "age": 1,
     "image_url": "/static/images/dogs/dog5.jpg",
     "adopted": false,
-    "shelter_id": 5,
+    "shelter_id": 1,
     "about": "Very smart, picks up training fast."
   },
   {
@@ -146,7 +146,7 @@
     "age": 4,
     "image_url": "/static/images/dogs/dog6.webp",
     "adopted": false,
-    "shelter_id": 4,
+    "shelter_id": 1,
     "about": "Gentle giant who loves attention."
   },
   {
@@ -156,7 +156,7 @@
     "age": 3,
     "image_url": "/static/images/dogs/dog7.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 1,
     "about": "Fun-loving and eager to please."
   },
   {
@@ -166,7 +166,7 @@
     "age": 6,
     "image_url": "/static/images/dogs/dog9.jpg",
     "adopted": false,
-    "shelter_id": 2,
+    "shelter_id": 1,
     "about": "Great with kids, very patient and kind."
   },
   {
